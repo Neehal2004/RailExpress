@@ -1,0 +1,14 @@
+{
+  "name": "railway-ticket-booking-system",
+  "version": "1.0.0",
+  "description": "Full Stack MERN Railway Ticket Booking System (RTBS) based on SRS specifications",
+  "scripts": {
+    "seed": "cd backend && npm run seed",
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npm run dev",
+    "start": "concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
