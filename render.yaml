@@ -23,7 +23,6 @@ services:
   - type: web
     name: rtbs-frontend
     env: static
-    region: singapore
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/dist
     routes:
@@ -35,4 +34,4 @@ services:
         fromService:
           type: web
           name: rtbs-backend
-          property: url
+          property: host

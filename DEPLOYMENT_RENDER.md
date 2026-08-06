@@ -78,4 +78,4 @@ All 30 onward and return journey trains, stations, and demo accounts will be see
 
 - **[`render.yaml`](file:///c:/Users/NEEHAL/OneDrive/Desktop/Railway%20Ticket%20Booking%20System/render.yaml)** - Infrastructure as code blueprint.
 - **[`frontend/public/_redirects`](file:///c:/Users/NEEHAL/OneDrive/Desktop/Railway%20Ticket%20Booking%20System/frontend/public/_redirects)** - SPA rewrite rules (`/* /index.html 200`).
-- **[`frontend/src/config/api.js`](file:///c:/Users/NEEHAL/OneDrive/Desktop/Railway%20Ticket%20Booking%20System/frontend/src/config/api.js)** - Dynamic API base URL resolver.
+- **[`frontend/src/config/api.js`](file:///c:/Users/NEEHAL/OneDrive/Desktop/Railway%20Ticket%20Booking%20System/frontend/src/config/api.js)** - Dynamic API base URL resolver (auto-prepends `https://`).
