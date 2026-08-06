@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, RefreshCw, AlertCircle } from 'lucide-react';
 import TrainCard from '../components/TrainCard';
+import API_BASE from '../config/api';
 
 export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
   const [source, setSource] = useState(initialSearch?.source || '');
@@ -13,7 +14,7 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
 
   const fetchTrains = (src, dest) => {
     setLoading(true);
-    let url = '/api/trains';
+    let url = `${API_BASE}/api/trains`;
     const params = new URLSearchParams();
     if (src && src.trim() !== '') params.append('source', src.trim());
     if (dest && dest.trim() !== '') params.append('destination', dest.trim());

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Ticket, CheckCircle, AlertCircle, RefreshCw, Printer } from 'lucide-react';
 import TicketView from '../components/TicketView';
+import API_BASE from '../config/api';
 
 export default function PnrStatus() {
   const [pnrInput, setPnrInput] = useState('PNR-9823410582');
@@ -17,7 +18,7 @@ export default function PnrStatus() {
     setError('');
     setTicketData(null);
 
-    fetch(`/api/bookings/pnr/${pnrInput.trim()}`)
+    fetch(`${API_BASE}/api/bookings/pnr/${pnrInput.trim()}`)
       .then((res) => {
         if (!res.ok) throw new Error('No booking found for this PNR number.');
         return res.json();

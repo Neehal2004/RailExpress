@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { X, LogIn, UserPlus, Shield, UserCheck, AlertCircle } from 'lucide-react';
+import API_BASE from '../config/api';
 
 export default function AuthModal({ initialMode = 'login', onClose, onSuccessNotification }) {
   const { login } = useContext(AuthContext);
@@ -18,7 +19,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
     setLoading(true);
     setError('');
 
-    const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/register';
+    const endpoint = mode === 'login' ? `${API_BASE}/api/auth/login` : `${API_BASE}/api/auth/register`;
     const payload = mode === 'login' ? { email, password } : { name, email, phone, password, role };
 
     try {
@@ -55,7 +56,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
     setError('');
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: demoEmail, password: demoPassword })

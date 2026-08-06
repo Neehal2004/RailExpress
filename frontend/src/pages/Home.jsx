@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Calendar, Train, ShieldCheck, Zap, RefreshCw, Award, ArrowRight } from 'lucide-react';
 import TrainCard from '../components/TrainCard';
+import API_BASE from '../config/api';
 
 export default function Home({ onSearch, onSelectBookingClass }) {
   const [source, setSource] = useState('New Delhi (NDLS)');
@@ -10,7 +11,7 @@ export default function Home({ onSearch, onSelectBookingClass }) {
   const [featuredTrains, setFeaturedTrains] = useState([]);
 
   useEffect(() => {
-    fetch('/api/trains')
+    fetch(`${API_BASE}/api/trains`)
       .then((res) => res.json())
       .then((data) => {
         if (data.stations) setStations(data.stations);
@@ -79,7 +80,7 @@ export default function Home({ onSearch, onSelectBookingClass }) {
           </p>
 
           {/* Station Search Widget Panel */}
-          <div className="glass-panel" style={{ padding: '28px', textAlgn: 'left' }}>
+          <div className="glass-panel" style={{ padding: '28px', textAlign: 'left' }}>
             <form onSubmit={handleSearchSubmit}>
               <div
                 style={{

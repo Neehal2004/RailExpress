@@ -12,6 +12,7 @@ import TrainSearch from './pages/TrainSearch';
 import MyBookings from './pages/MyBookings';
 import PnrStatus from './pages/PnrStatus';
 import AdminDashboard from './pages/AdminDashboard';
+import API_BASE from './config/api';
 
 function MainApp() {
   const { user } = useContext(AuthContext);
@@ -66,7 +67,7 @@ function MainApp() {
         paymentMethod
       };
 
-      const res = await fetch('/api/bookings', {
+      const res = await fetch(`${API_BASE}/api/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +149,7 @@ function MainApp() {
             <strong>RailExpress SRS Implementation</strong> • Railway Ticket Booking System (MERN Stack)
           </div>
           <div>
-            Built with React, Express.js & MongoDB Localhost
+            Built with React, Express.js & MongoDB
           </div>
         </div>
       </footer>

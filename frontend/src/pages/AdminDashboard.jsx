@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { ShieldCheck, Plus, Trash2, Edit3, DollarSign, Ticket, Train, Users, Download, RefreshCw, AlertCircle, X } from 'lucide-react';
+import API_BASE from '../config/api';
 
 export default function AdminDashboard({ onNotification }) {
   const { user } = useContext(AuthContext);
@@ -32,10 +33,10 @@ export default function AdminDashboard({ onNotification }) {
     const headers = { Authorization: `Bearer ${user.token}` };
 
     Promise.all([
-      fetch('/api/admin/stats', { headers }).then((res) => res.json()),
-      fetch('/api/trains').then((res) => res.json()),
-      fetch('/api/admin/bookings', { headers }).then((res) => res.json()),
-      fetch('/api/admin/payments', { headers }).then((res) => res.json())
+      fetch(`${API_BASE}/api/admin/stats`, { headers }).then((res) => res.json()),
+      fetch(`${API_BASE}/api/trains`).then((res) => res.json()),
+      fetch(`${API_BASE}/api/admin/bookings`, { headers }).then((res) => res.json()),
+      fetch(`${API_BASE}/api/admin/payments`, { headers }).then((res) => res.json())
     ])
       .then(([statsData, trainsData, bookingsData, paymentsData]) => {
         if (statsData) setStats(statsData);
@@ -68,7 +69,7 @@ export default function AdminDashboard({ onNotification }) {
     };
 
     const method = editingTrain ? 'PUT' : 'POST';
-    const url = editingTrain ? `/api/trains/${editingTrain._id}` : '/api/trains';
+    const url = editingTrain ? `${API_BASE}/api/trains/${editingTrain._id}` : `${API_BASE}/api/trains`;
 
     try {
       const res = await fetch(url, {
@@ -102,7 +103,7 @@ export default function AdminDashboard({ onNotification }) {
     if (!window.confirm(`Are you sure you want to delete Train #${trainNo}?`)) return;
 
     try {
-      const res = await fetch(`/api/trains/${id}`, {
+      const res = await fetch(`${API_BASE}/api/trains/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${user.token}` }
       });

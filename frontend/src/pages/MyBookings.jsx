@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Ticket, Printer, XCircle, CheckCircle, RefreshCw, AlertCircle } from 'lucide-react';
 import TicketView from '../components/TicketView';
+import API_BASE from '../config/api';
 
 export default function MyBookings({ onNotification }) {
   const { user } = useContext(AuthContext);
@@ -14,7 +15,7 @@ export default function MyBookings({ onNotification }) {
   const fetchBookings = () => {
     if (!user || !user.token) return;
     setLoading(true);
-    fetch('/api/bookings/my-bookings', {
+    fetch(`${API_BASE}/api/bookings/my-bookings`, {
       headers: { Authorization: `Bearer ${user.token}` }
     })
       .then((res) => res.json())
@@ -40,7 +41,7 @@ export default function MyBookings({ onNotification }) {
 
     setCancellingPNR(pnr);
     try {
-      const res = await fetch(`/api/bookings/cancel/${pnr}`, {
+      const res = await fetch(`${API_BASE}/api/bookings/cancel/${pnr}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${user.token}` }
       });
