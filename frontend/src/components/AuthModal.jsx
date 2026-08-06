@@ -83,7 +83,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
   };
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
       <div className="modal-content" style={{ maxWidth: '440px' }}>
         {/* Modal Header */}
         <div
@@ -92,48 +92,56 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
             justifyContent: 'space-between',
             alignItems: 'center',
             borderBottom: '1px solid var(--border-color)',
-            paddingBottom: '16px',
-            marginBottom: '20px'
+            paddingBottom: '14px',
+            marginBottom: '16px'
           }}
         >
-          <h3 style={{ fontSize: '1.25rem', color: '#fff' }}>
+          <h3 id="auth-modal-title" style={{ fontSize: '1.25rem', color: '#fff' }}>
             {mode === 'login' ? 'User Login' : 'Create Account'}
           </h3>
-          <button onClick={onClose} className="btn btn-sm btn-secondary">
+          <button onClick={onClose} className="btn btn-sm btn-secondary" aria-label="Close modal">
             <X size={18} />
           </button>
         </div>
 
         {/* Mode Switch Tabs */}
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+        <div style={{ display: 'flex', gap: '6px', marginBottom: '16px' }}>
           <button
+            type="button"
             onClick={() => { setMode('login'); setError(''); }}
+            aria-pressed={mode === 'login'}
             style={{
               flex: 1,
               padding: '10px',
+              minHeight: '44px',
               borderRadius: 'var(--radius-sm)',
               background: mode === 'login' ? 'var(--accent-gradient)' : 'rgba(255,255,255,0.05)',
               color: '#fff',
               fontWeight: 600,
-              fontSize: '0.9rem',
+              fontSize: '0.88rem',
               border: 'none',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              touchAction: 'manipulation'
             }}
           >
             Login
           </button>
           <button
+            type="button"
             onClick={() => { setMode('register'); setError(''); }}
+            aria-pressed={mode === 'register'}
             style={{
               flex: 1,
               padding: '10px',
+              minHeight: '44px',
               borderRadius: 'var(--radius-sm)',
               background: mode === 'register' ? 'var(--accent-gradient)' : 'rgba(255,255,255,0.05)',
               color: '#fff',
               fontWeight: 600,
-              fontSize: '0.9rem',
+              fontSize: '0.88rem',
               border: 'none',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              touchAction: 'manipulation'
             }}
           >
             Register
@@ -141,16 +149,16 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
         </div>
 
         {/* Quick Demo Credentials Buttons */}
-        <div style={{ marginBottom: '20px', padding: '12px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', border: '1px dashed rgba(59, 130, 246, 0.3)' }}>
-          <span style={{ fontSize: '0.75rem', color: 'var(--accent-cyan)', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+        <div style={{ marginBottom: '16px', padding: '10px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', border: '1px dashed rgba(59, 130, 246, 0.3)' }}>
+          <span style={{ fontSize: '0.72rem', color: 'var(--accent-cyan)', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
             ⚡ One-Click Quick Demo Login:
           </span>
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
             <button
               type="button"
               onClick={() => handleDemoLogin('john@example.com', 'User@123')}
               className="btn btn-sm btn-secondary"
-              style={{ flex: 1, fontSize: '0.75rem' }}
+              style={{ fontSize: '0.75rem', width: '100%' }}
             >
               <UserCheck size={14} className="text-cyan-400" /> Passenger Demo
             </button>
@@ -158,7 +166,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
               type="button"
               onClick={() => handleDemoLogin('admin@railway.com', 'Admin@123')}
               className="btn btn-sm btn-secondary"
-              style={{ flex: 1, fontSize: '0.75rem', borderColor: 'rgba(245, 158, 11, 0.4)', color: '#fbbf24' }}
+              style={{ fontSize: '0.75rem', width: '100%', borderColor: 'rgba(245, 158, 11, 0.4)', color: '#fbbf24' }}
             >
               <Shield size={14} /> Admin Demo
             </button>
@@ -166,7 +174,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
         </div>
 
         {error && (
-          <div style={{ background: 'var(--danger-bg)', color: '#f87171', padding: '10px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div role="alert" style={{ background: 'var(--danger-bg)', color: '#f87171', padding: '10px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <AlertCircle size={16} /> {error}
           </div>
         )}
@@ -237,7 +245,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
             type="submit"
             disabled={loading}
             className="btn btn-primary"
-            style={{ width: '100%', padding: '12px', marginTop: '10px' }}
+            style={{ width: '100%', padding: '12px', marginTop: '8px' }}
           >
             {loading ? 'Processing...' : mode === 'login' ? 'Sign In' : 'Create Account'}
           </button>

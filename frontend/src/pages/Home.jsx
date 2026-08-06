@@ -37,7 +37,7 @@ export default function Home({ onSearch, onSelectBookingClass }) {
       <section
         style={{
           position: 'relative',
-          padding: '60px 20px 80px 20px',
+          padding: 'clamp(32px, 5vw, 60px) 16px',
           textAlign: 'center',
           background: 'radial-gradient(ellipse at top, rgba(37, 99, 235, 0.25) 0%, transparent 70%)'
         }}
@@ -47,26 +47,27 @@ export default function Home({ onSearch, onSelectBookingClass }) {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px',
-              padding: '6px 16px',
+              gap: '6px',
+              padding: '6px 14px',
               borderRadius: '999px',
               background: 'rgba(6, 182, 212, 0.15)',
               border: '1px solid rgba(6, 182, 212, 0.3)',
               color: 'var(--accent-cyan)',
-              fontSize: '0.85rem',
+              fontSize: '0.8rem',
               fontWeight: 700,
-              marginBottom: '20px'
+              marginBottom: '16px',
+              maxWidth: '100%'
             }}
           >
-            <Zap size={16} /> Fast, Reliable & Secure Railway Reservation
+            <Zap size={15} /> Fast, Reliable & Secure Railway Reservation
           </div>
 
           <h1
             style={{
-              fontSize: 'clamp(2.2rem, 5vw, 3.5rem)',
+              fontSize: 'clamp(1.75rem, 5vw, 3.25rem)',
               fontWeight: 800,
-              lineHeight: 1.15,
-              marginBottom: '16px',
+              lineHeight: 1.18,
+              marginBottom: '14px',
               background: 'linear-gradient(to right, #ffffff, #93c5fd)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent'
@@ -75,44 +76,44 @@ export default function Home({ onSearch, onSelectBookingClass }) {
             Book Your Next Journey Across India with Confidence
           </h1>
 
-          <p style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', maxWidth: '680px', margin: '0 auto 40px auto' }}>
+          <p style={{ fontSize: 'clamp(0.92rem, 2vw, 1.1rem)', color: 'var(--text-secondary)', maxWidth: '680px', margin: '0 auto 28px auto' }}>
             Check real-time train availability, book confirmed tickets in seconds, track PNR status live, and experience instant hassle-free refunds.
           </p>
 
           {/* Station Search Widget Panel */}
-          <div className="glass-panel" style={{ padding: '28px', textAlign: 'left' }}>
+          <div className="glass-panel" style={{ padding: 'clamp(16px, 4vw, 28px)', textAlign: 'left' }}>
             <form onSubmit={handleSearchSubmit}>
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-                  gap: '16px',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                  gap: '12px',
                   alignItems: 'end'
                 }}
               >
                 {/* Source Station */}
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label className="form-label">From Station</label>
-                  <div style={{ position: 'relative' }}>
-                    <input
-                      type="text"
-                      className="form-input"
-                      list="station-list"
-                      value={source}
-                      onChange={(e) => setSource(e.target.value)}
-                      placeholder="e.g. New Delhi (NDLS)"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    className="form-input"
+                    list="station-list"
+                    value={source}
+                    onChange={(e) => setSource(e.target.value)}
+                    placeholder="e.g. New Delhi (NDLS)"
+                    aria-label="From Station"
+                  />
                 </div>
 
                 {/* Swap Station Button */}
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2px' }}>
                   <button
                     type="button"
                     onClick={swapStations}
                     className="btn btn-secondary btn-sm"
-                    style={{ borderRadius: '50%', width: '38px', height: '38px', padding: 0 }}
+                    style={{ borderRadius: '50%', width: '40px', height: '40px', padding: 0 }}
                     title="Swap stations"
+                    aria-label="Swap source and destination stations"
                   >
                     ⇄
                   </button>
@@ -128,6 +129,7 @@ export default function Home({ onSearch, onSelectBookingClass }) {
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
                     placeholder="e.g. Mumbai Central (MMCT)"
+                    aria-label="To Station"
                   />
                 </div>
 
@@ -139,6 +141,7 @@ export default function Home({ onSearch, onSelectBookingClass }) {
                     className="form-input"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
+                    aria-label="Travel Date"
                   />
                 </div>
 
@@ -169,8 +172,8 @@ export default function Home({ onSearch, onSelectBookingClass }) {
       </section>
 
       {/* Feature Highlights Section */}
-      <section style={{ maxWidth: '1200px', margin: '0 auto 60px auto', padding: '0 20px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
+      <section style={{ maxWidth: '1200px', margin: '0 auto 40px auto', padding: '0 16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
           {[
             {
               icon: <Train size={28} className="text-cyan-400" />,
@@ -193,10 +196,10 @@ export default function Home({ onSearch, onSelectBookingClass }) {
               desc: 'Generate official print-ready E-Tickets complete with QR code TC verification.'
             }
           ].map((item, index) => (
-            <div key={index} className="glass-card" style={{ padding: '24px' }}>
-              <div style={{ marginBottom: '14px' }}>{item.icon}</div>
-              <h3 style={{ fontSize: '1.15rem', color: '#fff', marginBottom: '8px' }}>{item.title}</h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{item.desc}</p>
+            <div key={index} className="glass-card" style={{ padding: '20px' }}>
+              <div style={{ marginBottom: '10px' }}>{item.icon}</div>
+              <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '6px' }}>{item.title}</h3>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>{item.desc}</p>
             </div>
           ))}
         </div>
@@ -204,11 +207,11 @@ export default function Home({ onSearch, onSelectBookingClass }) {
 
       {/* Featured Trains Section */}
       {featuredTrains.length > 0 && (
-        <section style={{ maxWidth: '1200px', margin: '0 auto 60px auto', padding: '0 20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+        <section style={{ maxWidth: '1200px', margin: '0 auto 40px auto', padding: '0 16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
             <div>
-              <h2 style={{ fontSize: '1.75rem', color: '#fff' }}>Popular Superfast & Vande Bharat Express Trains</h2>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Top rated daily connections with high seat availability</p>
+              <h2 style={{ fontSize: 'clamp(1.25rem, 3vw, 1.75rem)', color: '#fff' }}>Popular Superfast & Vande Bharat Express Trains</h2>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Top rated daily connections with high seat availability</p>
             </div>
             <button onClick={() => onSearch({ source: '', destination: '', date })} className="btn btn-secondary btn-sm">
               View All Trains <ArrowRight size={16} />

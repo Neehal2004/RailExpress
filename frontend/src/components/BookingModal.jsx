@@ -54,7 +54,7 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
   };
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
       <div className="modal-content" style={{ maxWidth: '680px' }}>
         {/* Header */}
         <div
@@ -63,23 +63,23 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
             justifyContent: 'space-between',
             alignItems: 'center',
             borderBottom: '1px solid var(--border-color)',
-            paddingBottom: '16px',
-            marginBottom: '20px'
+            paddingBottom: '14px',
+            marginBottom: '16px'
           }}
         >
           <div>
-            <h3 style={{ fontSize: '1.25rem', color: '#fff' }}>Passenger Details</h3>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+            <h3 id="booking-modal-title" style={{ fontSize: '1.25rem', color: '#fff' }}>Passenger Details</h3>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
               {train.trainName} ({train.trainNumber}) • Class: <span style={{ color: 'var(--accent-cyan)', fontWeight: 700 }}>{selectedClass.className}</span> • Date: {travelDate}
             </p>
           </div>
-          <button onClick={onClose} className="btn btn-sm btn-secondary">
+          <button onClick={onClose} className="btn btn-sm btn-secondary" aria-label="Close modal">
             <X size={18} />
           </button>
         </div>
 
         {error && (
-          <div style={{ background: 'var(--danger-bg)', color: '#f87171', padding: '10px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
+          <div role="alert" style={{ background: 'var(--danger-bg)', color: '#f87171', padding: '10px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
             {error}
           </div>
         )}
@@ -92,26 +92,27 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
                 background: 'rgba(255, 255, 255, 0.03)',
                 border: '1px solid var(--border-color)',
                 borderRadius: 'var(--radius-sm)',
-                padding: '16px',
-                marginBottom: '16px'
+                padding: '14px',
+                marginBottom: '14px'
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--accent-cyan)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--accent-cyan)' }}>
                   Passenger #{index + 1}
                 </span>
                 {passengers.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removePassenger(index)}
-                    style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer' }}
+                    aria-label={`Remove passenger ${index + 1}`}
+                    style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', padding: '4px' }}
                   >
                     <Trash2 size={16} />
                   </button>
                 )}
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '12px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px' }}>
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <label className="form-label">Full Name *</label>
                   <input
@@ -174,7 +175,7 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
               type="button"
               onClick={addPassenger}
               className="btn btn-secondary"
-              style={{ width: '100%', marginBottom: '20px', borderStyle: 'dashed' }}
+              style={{ width: '100%', marginBottom: '16px', borderStyle: 'dashed' }}
             >
               <Plus size={16} /> Add Passenger ({passengers.length}/4)
             </button>
@@ -184,33 +185,35 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
           <div
             style={{
               background: 'rgba(15, 23, 42, 0.8)',
-              padding: '16px',
+              padding: '14px',
               borderRadius: 'var(--radius-sm)',
-              marginBottom: '20px',
+              marginBottom: '16px',
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: '8px'
             }}
           >
             <div>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
                 ₹{selectedClass.fare} × {passengers.length} Passenger(s)
               </div>
-              <div style={{ fontSize: '0.8rem', color: '#34d399' }}>Includes all taxes & railway reservation fees</div>
+              <div style={{ fontSize: '0.75rem', color: '#34d399' }}>Includes all taxes & railway reservation fees</div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Total Amount</span>
-              <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Total Amount</span>
+              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>
                 ₹{selectedClass.fare * passengers.length}
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-            <button type="button" onClick={onClose} className="btn btn-secondary">
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+            <button type="button" onClick={onClose} className="btn btn-secondary" style={{ flex: '1 1 100px' }}>
               Cancel
             </button>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary" style={{ flex: '1 1 180px' }}>
               Proceed to Payment <ArrowRight size={18} />
             </button>
           </div>
