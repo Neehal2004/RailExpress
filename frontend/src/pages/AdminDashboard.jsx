@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { ShieldCheck, Plus, Trash2, Edit3, DollarSign, Ticket, Train, Users, Download, RefreshCw, AlertCircle, X } from 'lucide-react';
+import { ShieldCheck, Plus, Trash2, Edit3, DollarSign, Ticket, Train, Users, Download, RefreshCw, AlertCircle, X, Radio } from 'lucide-react';
 import API_BASE from '../config/api';
 
 export default function AdminDashboard({ onNotification }) {
@@ -11,24 +11,11 @@ export default function AdminDashboard({ onNotification }) {
   const [allBookings, setAllBookings] = useState([]);
   const [allPayments, setAllPayments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [lastSyncTime, setLastSyncTime] = useState(new Date());
 
-  // Train Modal State
-  const [showAddTrainModal, setShowAddTrainModal] = useState(false);
-  const [editingTrain, setEditingTrain] = useState(null);
-
-  // Train Form State
-  const [trainNumber, setTrainNumber] = useState('');
-  const [trainName, setTrainName] = useState('');
-  const [source, setSource] = useState('');
-  const [destination, setDestination] = useState('');
-  const [departureTime, setDepartureTime] = useState('06:00 AM');
-  const [arrivalTime, setArrivalTime] = useState('02:00 PM');
-  const [duration, setDuration] = useState('8h 00m');
-  const [distanceKm, setDistanceKm] = useState(500);
-
-  const fetchAdminData = () => {
+  const fetchAdminData = (silent = false) => {
     if (!user || user.role !== 'admin') return;
-    setLoading(true);
+    if (!silent) setLoading(true);
 
     const headers = { Authorization: `Bearer ${user.token}` };
 
@@ -43,6 +30,7 @@ export default function AdminDashboard({ onNotification }) {
         if (trainsData.trains) setTrains(trainsData.trains);
         if (Array.isArray(bookingsData)) setAllBookings(bookingsData);
         if (Array.isArray(paymentsData)) setAllPayments(paymentsData);
+        setLastSyncTime(new Date());
         setLoading(false);
       })
       .catch((err) => {
@@ -51,9 +39,38 @@ export default function AdminDashboard({ onNotification }) {
       });
   };
 
+  // Real-Time Auto Polling & Focus Sync
   useEffect(() => {
-    fetchAdminData();
+    fetchAdminData(false);
+
+    // Auto-poll every 10 seconds for real-time updates across devices
+    const timer = setInterval(() => {
+      fetchAdminData(true);
+    }, 10000);
+
+    // Refetch immediately when tab gains focus
+    const handleFocus = () => fetchAdminData(true);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, [user]);
+
+  // Train Modal State
+  const [showAddTrainModal, setShowAddTrainModal] = useState(false);
+  const [editingTrain, setEditingTrain] = useState(null);
+
+  // Train Form State
+  const [trainNumber, setTrainNumber] = useState('');
+  const [trainName, setTrainName] = useState('');
+  const [source, setSource] = useState('');
+  const [destination, setDestination] = useState('');
+  const [departureTime, setDepartureTime] = useState('06:00 AM');
+  const [arrivalTime, setArrivalTime] = useState('02:00 PM');
+  const [duration, setDuration] = useState('8h 00m');
+  const [distanceKm, setDistanceKm] = useState(500);
 
   const handleSaveTrain = async (e) => {
     e.preventDefault();
@@ -93,7 +110,7 @@ export default function AdminDashboard({ onNotification }) {
       setShowAddTrainModal(false);
       setEditingTrain(null);
       resetForm();
-      fetchAdminData();
+      fetchAdminData(true);
     } catch (err) {
       if (onNotification) onNotification({ type: 'error', message: err.message });
     }
@@ -111,7 +128,7 @@ export default function AdminDashboard({ onNotification }) {
       if (!res.ok) throw new Error(data.message || 'Failed to delete train');
 
       if (onNotification) onNotification({ type: 'success', message: `Train #${trainNo} deleted` });
-      fetchAdminData();
+      fetchAdminData(true);
     } catch (err) {
       if (onNotification) onNotification({ type: 'error', message: err.message });
     }
@@ -180,15 +197,18 @@ export default function AdminDashboard({ onNotification }) {
             <ShieldCheck size={24} color="#fbbf24" />
             <h2 style={{ fontSize: 'clamp(1.35rem, 4vw, 1.75rem)', color: '#fff' }}>Railway Admin Control Center</h2>
           </div>
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>Manage train schedules, oversee passenger bookings, and generate financial reports</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+            <Radio size={14} className="text-emerald-400" />
+            <span>Live Auto-Sync (Updated {lastSyncTime.toLocaleTimeString()})</span>
+          </div>
         </div>
 
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button onClick={exportReportJSON} className="btn btn-secondary btn-sm">
             <Download size={16} /> Export JSON Report
           </button>
-          <button onClick={fetchAdminData} className="btn btn-secondary btn-sm">
-            <RefreshCw size={16} /> Refresh
+          <button onClick={() => fetchAdminData(false)} className="btn btn-secondary btn-sm">
+            <RefreshCw size={16} /> Sync Now
           </button>
         </div>
       </div>
@@ -246,7 +266,7 @@ export default function AdminDashboard({ onNotification }) {
         </div>
       )}
 
-      {/* Dashboard Tabs Bar (Touch Scrollable) */}
+      {/* Dashboard Tabs Bar */}
       <div
         style={{
           display: 'flex',
