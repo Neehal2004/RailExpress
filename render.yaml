@@ -20,8 +20,9 @@ services:
   # -------------------------------------------------------------
   # Frontend React (Vite) Static Site
   # -------------------------------------------------------------
-  - type: static
+  - type: web
     name: rtbs-frontend
+    env: static
     region: singapore
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/dist

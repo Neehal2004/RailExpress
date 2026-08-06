@@ -14,7 +14,7 @@ The repository includes a ready-to-use **[`render.yaml`](file:///c:/Users/NEEHAL
 4. Connect your GitHub repository containing this project.
 5. Render will automatically detect `render.yaml` and create two services:
    - **`rtbs-backend`** (Node.js Web Service)
-   - **`rtbs-frontend`** (React Static Site)
+   - **`rtbs-frontend`** (React Static Site with `env: static`)
 6. Under **`rtbs-backend`** Environment Variables in Render Dashboard, set your MongoDB Atlas connection string:
    - Key: `MONGO_URI`
    - Value: `mongodb+srv://<user>:<password>@cluster0.mongodb.net/rtbs?retryWrites=true&w=majority`
