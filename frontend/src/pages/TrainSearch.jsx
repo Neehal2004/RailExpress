@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, RefreshCw, AlertCircle } from 'lucide-react';
+import { Search, RefreshCw, AlertCircle } from 'lucide-react';
 import TrainCard from '../components/TrainCard';
 
 export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
@@ -15,8 +15,8 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
     setLoading(true);
     let url = '/api/trains';
     const params = new URLSearchParams();
-    if (src) params.append('source', src);
-    if (dest) params.append('destination', dest);
+    if (src && src.trim() !== '') params.append('source', src.trim());
+    if (dest && dest.trim() !== '') params.append('destination', dest.trim());
     if (params.toString()) url += `?${params.toString()}`;
 
     fetch(url)
@@ -33,8 +33,18 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
   };
 
   useEffect(() => {
-    fetchTrains(source, destination);
-  }, []);
+    if (initialSearch) {
+      const src = initialSearch.source !== undefined ? initialSearch.source : source;
+      const dest = initialSearch.destination !== undefined ? initialSearch.destination : destination;
+      const dt = initialSearch.date !== undefined ? initialSearch.date : date;
+      setSource(src);
+      setDestination(dest);
+      setDate(dt);
+      fetchTrains(src, dest);
+    } else {
+      fetchTrains(source, destination);
+    }
+  }, [initialSearch]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
