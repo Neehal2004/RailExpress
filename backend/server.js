@@ -1,7 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import connectDB from './config/db.js';
+import mongoose from 'mongoose';
+import connectDB, { isMongoConnected } from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import trainRoutes from './routes/trainRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
@@ -24,9 +25,13 @@ app.use('/api/trains', trainRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Root route
+// Root route with Live Database Health Status
 app.get('/', (req, res) => {
-  res.json({ message: 'Railway Ticket Booking System API is running...' });
+  res.json({
+    message: 'Railway Ticket Booking System API is running...',
+    databaseStatus: isMongoConnected ? 'Connected to MongoDB' : 'Hybrid In-Memory Mode (MongoDB Disconnected)',
+    connectedHost: isMongoConnected ? mongoose.connection.host : null
+  });
 });
 
 // Error handling middleware
