@@ -11,9 +11,9 @@ export default function MyBookings({ onNotification }) {
   const [error, setError] = useState('');
   const [selectedTicket, setSelectedTicket] = useState(null);
 
-  const fetchUserBookings = () => {
+  const fetchUserBookings = (silent = false) => {
     if (!user || !user.token) return;
-    setLoading(true);
+    if (!silent) setLoading(true);
     setError('');
 
     fetch(`${API_BASE}/api/bookings/my-bookings`, {
@@ -24,7 +24,8 @@ export default function MyBookings({ onNotification }) {
         return res.json();
       })
       .then((data) => {
-        if (Array.isArray(data)) setBookings(data);
+        const bookingsList = Array.isArray(data) ? data : data.bookings || [];
+        setBookings(bookingsList);
         setLoading(false);
       })
       .catch((err) => {
@@ -35,14 +36,27 @@ export default function MyBookings({ onNotification }) {
   };
 
   useEffect(() => {
-    fetchUserBookings();
+    fetchUserBookings(false);
+
+    // Auto-poll every 10 seconds for real-time updates across devices
+    const timer = setInterval(() => {
+      fetchUserBookings(true);
+    }, 10000);
+
+    const handleFocus = () => fetchUserBookings(true);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('focus', handleFocus);
+    };
   }, [user]);
 
-  const handleCancelBooking = async (id, pnr) => {
+  const handleCancelBooking = async (pnr) => {
     if (!window.confirm(`Are you sure you want to cancel ticket PNR: ${pnr}?`)) return;
 
     try {
-      const res = await fetch(`${API_BASE}/api/bookings/cancel/${id}`, {
+      const res = await fetch(`${API_BASE}/api/bookings/cancel/${pnr}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${user.token}` }
       });
@@ -53,10 +67,10 @@ export default function MyBookings({ onNotification }) {
       if (onNotification) {
         onNotification({
           type: 'success',
-          message: `Booking PNR: ${pnr} cancelled. Refund of ₹${data.booking?.refundAmount || ''} initiated.`
+          message: `Booking PNR: ${pnr} cancelled. Refund of ₹${data.booking?.refundAmount || data.refundAmount || ''} initiated.`
         });
       }
-      fetchUserBookings();
+      fetchUserBookings(true);
     } catch (err) {
       if (onNotification) onNotification({ type: 'error', message: err.message });
     }
@@ -84,7 +98,7 @@ export default function MyBookings({ onNotification }) {
           <h2 style={{ fontSize: 'clamp(1.35rem, 4vw, 1.85rem)', color: '#fff' }}>My Travel Bookings</h2>
           <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>View active reservations, download E-Tickets, and process ticket cancellations</p>
         </div>
-        <button onClick={fetchUserBookings} className="btn btn-secondary btn-sm">
+        <button onClick={() => fetchUserBookings(false)} className="btn btn-secondary btn-sm">
           <RefreshCw size={16} /> Refresh
         </button>
       </div>
@@ -167,7 +181,7 @@ export default function MyBookings({ onNotification }) {
                         </button>
                         {b.status === 'Confirmed' && (
                           <button
-                            onClick={() => handleCancelBooking(b._id, b.pnr)}
+                            onClick={() => handleCancelBooking(b.pnr)}
                             className="btn btn-sm btn-danger"
                             title="Cancel Ticket"
                           >
@@ -226,7 +240,7 @@ export default function MyBookings({ onNotification }) {
                   </button>
                   {b.status === 'Confirmed' && (
                     <button
-                      onClick={() => handleCancelBooking(b._id, b.pnr)}
+                      onClick={() => handleCancelBooking(b.pnr)}
                       className="btn btn-sm btn-danger"
                       style={{ flex: 1 }}
                     >
