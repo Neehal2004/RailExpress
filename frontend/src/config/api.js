@@ -1,9 +1,15 @@
 // Centralized API Base URL configuration for local dev and Render deployment
-let API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+const rawEnv = import.meta.env.VITE_API_BASE_URL;
 
-// Automatically prepend https:// if Render passes hostname (property: host)
-if (API_BASE && !API_BASE.startsWith('http://') && !API_BASE.startsWith('https://')) {
-  API_BASE = `https://${API_BASE}`;
+function getApiBase() {
+  if (!rawEnv) return '';
+  let url = String(rawEnv).trim();
+  if (url === '' || url === 'undefined' || url === 'null') return '';
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = `https://${url}`;
+  }
+  return url.replace(/\/+$/, '');
 }
 
+const API_BASE = getApiBase();
 export default API_BASE;
