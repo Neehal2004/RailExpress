@@ -4,6 +4,16 @@ A modern, fast, and user-friendly full-stack MERN (MongoDB, Express.js, React, N
 
 ---
 
+## 🌐 Live Cloud Deployment & Links
+
+| Service | Live URL | Status |
+| :--- | :--- | :---: |
+| **Frontend Web App** | 🔗 **[https://rtbs-frontend-vuvv.onrender.com](https://rtbs-frontend-vuvv.onrender.com)** | 🟢 Online |
+| **Backend REST API** | ⚡ **[https://rtbs-backend-vuvv.onrender.com](https://rtbs-backend-vuvv.onrender.com)** | 🟢 Online |
+| **GitHub Repository** | 📂 **[https://github.com/Neehal2004/RailExpress](https://github.com/Neehal2004/RailExpress)** | 🟢 Active |
+
+---
+
 ## 🍃 Database Configuration (MongoDB Atlas & Localhost)
 
 The project supports both **MongoDB Atlas (Cloud Database)** and **Localhost MongoDB**. You can easily switch between them using the `backend/.env` file.
@@ -24,7 +34,7 @@ MONGO_URI=mongodb://127.0.0.1:27017/rtbs
 # =================================================================
 # OPTION 2: MongoDB Atlas Cloud Database
 # =================================================================
-# To use MongoDB Atlas, uncomment the line below and replace with your connection string:
+# To use MongoDB Atlas, set your connection string:
 # MONGO_URI=mongodb+srv://<username>:<password>@cluster0.abcde.mongodb.net/rtbs?retryWrites=true&w=majority
 ```
 
@@ -42,7 +52,7 @@ MONGO_URI=mongodb://127.0.0.1:27017/rtbs
 - **Quick Demo Login**: 1-click evaluation login buttons pre-configured for instant testing.
 
 ### 2. Train Search & Availability (SRS 3.2)
-- **Search Trains**: Search routes by Source station, Destination station, and Travel date.
+- **Search Trains**: Search routes by Source station, Destination station, and Travel date across 12+ major stations.
 - **Seat Availability Tracking**: Real-time availability for **1A** (First AC), **2A** (2nd AC), **3A** (3rd AC), **SL** (Sleeper), and **CC** (AC Chair Car).
 
 ### 3. Ticket Booking & E-Ticket Generation (SRS 3.3)
@@ -63,6 +73,7 @@ MONGO_URI=mongodb://127.0.0.1:27017/rtbs
 
 ### 7. Admin Controls & Reporting (SRS 3.7)
 - **Train Schedule Management**: Admin panel to add new superfast/express trains, update timings/fares, and delete old schedules.
+- **Real-Time Cross-Device Auto-Sync**: Auto-polls every 10 seconds and syncs on window focus.
 - **Analytics & Financial Reports**: Executive summary cards (Total Revenue, Active Bookings, Refunded Amount, Total Passengers) + filterable master records and structured **JSON report export**.
 
 ---
@@ -70,8 +81,9 @@ MONGO_URI=mongodb://127.0.0.1:27017/rtbs
 ## 🚀 Tech Stack
 
 - **Frontend**: React (Vite), Lucide Icons, Glassmorphism Vanilla CSS design tokens.
-- **Backend**: Node.js, Express.js REST API, Jsonwebtoken (JWT), Bcryptjs.
+- **Backend**: Node.js (>=18.0.0), Express.js REST API, Jsonwebtoken (JWT), Bcryptjs.
 - **Database**: MongoDB Atlas (`mongodb+srv://...`) or Localhost MongoDB (`mongodb://127.0.0.1:27017/rtbs`).
+- **Deployment**: Render Blueprint (`render.yaml`), React Static Site, Express Node.js Web Service.
 
 ---
 
@@ -87,7 +99,7 @@ MONGO_URI=mongodb://127.0.0.1:27017/rtbs
 ## 🛠️ Installation & Setup Instructions
 
 ### Step 1: Database Seeding
-To populate MongoDB Atlas or Localhost MongoDB with sample trains (Vande Bharat, Rajdhani, Shatabdi), stations, and demo accounts:
+To populate MongoDB Atlas or Localhost MongoDB with 30 sample trains (Vande Bharat, Rajdhani, Shatabdi), stations, and demo accounts:
 
 ```bash
 # Navigate to backend directory
@@ -107,7 +119,7 @@ npm run seed
 # From backend directory
 npm start
 ```
-*Backend will run on: `http://localhost:5000`*
+*Backend will run on: `http://localhost:5000` (with auto-port failover)*
 
 ---
 
@@ -145,6 +157,7 @@ Railway Ticket Booking System/
 │   └── package.json
 ├── frontend/
 │   ├── public/
+│   │   └── _redirects   # Render SPA rewrite rules
 │   ├── src/
 │   │   ├── components/  # Navbar, TrainCard, BookingModal, PaymentModal, TicketView
 │   │   ├── context/     # AuthContext state provider
@@ -155,6 +168,9 @@ Railway Ticket Booking System/
 │   ├── index.html
 │   ├── vite.config.js
 │   └── package.json
-├── package.json
-└── README.md
+├── render.yaml          # Render Infrastructure as Code blueprint
+├── DEPLOYMENT_RENDER.md # Step-by-step Render deployment guide
+├── .gitignore           # Git exclusions
+├── README.txt           # Plain text documentation
+└── README.md            # Markdown documentation
 ```

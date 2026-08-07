@@ -3,6 +3,14 @@
                     Full Stack MERN Web Application
 ================================================================================
 
+LIVE DEMO & CLOUD DEPLOYMENT LINKS:
+--------------------------------------------------------------------------------
+* Live Web App (Frontend):   https://rtbs-frontend-vuvv.onrender.com
+* Live API Server (Backend): https://rtbs-backend-vuvv.onrender.com
+* GitHub Repository:         https://github.com/Neehal2004/RailExpress
+
+================================================================================
+
 1. PROJECT OVERVIEW
 --------------------------------------------------------------------------------
 RailExpress is a full-featured Railway Ticket Booking System (RTBS) built with the 
@@ -183,7 +191,7 @@ Railway Ticket Booking System/
 │   │   ├── context/
 │   │   │   └── AuthContext.jsx   # Authentication state provider
 │   │   ├── config/
-│   │   │   └── api.js            # API base URL resolver for local & production
+│   │   └── api.js            # API base URL resolver for local & production
 │   │   ├── pages/
 │   │   │   ├── Home.jsx          # Landing page with hero & station widget
 │   │   │   ├── TrainSearch.jsx   # Search filters & train results
