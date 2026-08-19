@@ -23,5 +23,10 @@ const bookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+bookingSchema.index(
+  { trainId: 1, travelDate: 1, classType: 1, 'passengers.seatNumber': 1 },
+  { unique: true, partialFilterExpression: { status: 'Confirmed' } }
+);
+
 const Booking = mongoose.model('Booking', bookingSchema);
 export default Booking;

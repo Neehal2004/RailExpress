@@ -1,5 +1,8 @@
 import Train from '../models/Train.js';
 import { isMongoConnected } from '../config/db.js';
+import mongoose from 'mongoose';
+import crypto from 'crypto';
+import asyncHandler from '../utils/asyncHandler.js';
 
 const escapeRegex = (text) => {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -543,153 +546,292 @@ export const inMemoryTrains = [
   }
 ];
 
-export const getTrains = async (req, res) => {
-  try {
-    const { source, destination } = req.query;
+/**
+ * @desc    Search and get all trains with unique station list
+ * @route   GET /api/trains
+ * @access  Public
+ */
+export const getTrains = asyncHandler(async (req, res) => {
+  const { source, destination } = req.query;
 
-    if (isMongoConnected) {
-      let query = {};
-      if (source && source.trim() !== '') {
-        const cleanSource = escapeRegex(source.trim());
-        query.source = { $regex: new RegExp(cleanSource, 'i') };
-      }
-      if (destination && destination.trim() !== '') {
-        const cleanDest = escapeRegex(destination.trim());
-        query.destination = { $regex: new RegExp(cleanDest, 'i') };
-      }
-
-      const trains = await Train.find(query).sort({ trainNumber: 1 });
-      const sources = await Train.distinct('source');
-      const destinations = await Train.distinct('destination');
-      const stations = Array.from(new Set([...sources, ...destinations])).sort();
-
-      return res.json({ trains, stations });
-    } else {
-      let trains = [...inMemoryTrains];
-      if (source && source.trim() !== '') {
-        const searchSource = source.trim().toLowerCase();
-        trains = trains.filter((t) => t.source.toLowerCase().includes(searchSource));
-      }
-      if (destination && destination.trim() !== '') {
-        const searchDest = destination.trim().toLowerCase();
-        trains = trains.filter((t) => t.destination.toLowerCase().includes(searchDest));
-      }
-
-      const sources = inMemoryTrains.map((t) => t.source);
-      const destinations = inMemoryTrains.map((t) => t.destination);
-      const stations = Array.from(new Set([...sources, ...destinations])).sort();
-
-      return res.json({ trains, stations });
+  if (isMongoConnected) {
+    const query = {};
+    if (source && typeof source === 'string' && source.trim() !== '') {
+      const cleanSource = escapeRegex(source.trim());
+      query.source = { $regex: new RegExp(cleanSource, 'i') };
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-export const getTrainById = async (req, res) => {
-  try {
-    if (isMongoConnected) {
-      const train = await Train.findById(req.params.id);
-      if (!train) return res.status(404).json({ message: 'Train not found' });
-      return res.json(train);
-    } else {
-      const train = inMemoryTrains.find((t) => t._id === req.params.id);
-      if (!train) return res.status(404).json({ message: 'Train not found' });
-      return res.json(train);
+    if (destination && typeof destination === 'string' && destination.trim() !== '') {
+      const cleanDest = escapeRegex(destination.trim());
+      query.destination = { $regex: new RegExp(cleanDest, 'i') };
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+
+    const trains = await Train.find(query).sort({ trainNumber: 1 });
+    const sources = await Train.distinct('source');
+    const destinations = await Train.distinct('destination');
+    const stations = Array.from(new Set([...sources, ...destinations])).sort();
+
+    return res.status(200).json({
+      success: true,
+      trains,
+      stations
+    });
+  } else {
+    let trains = [...inMemoryTrains];
+    if (source && typeof source === 'string' && source.trim() !== '') {
+      const searchSource = source.trim().toLowerCase();
+      trains = trains.filter((t) => t.source.toLowerCase().includes(searchSource));
+    }
+    if (destination && typeof destination === 'string' && destination.trim() !== '') {
+      const searchDest = destination.trim().toLowerCase();
+      trains = trains.filter((t) => t.destination.toLowerCase().includes(searchDest));
+    }
+
+    const sources = inMemoryTrains.map((t) => t.source);
+    const destinations = inMemoryTrains.map((t) => t.destination);
+    const stations = Array.from(new Set([...sources, ...destinations])).sort();
+
+    return res.status(200).json({
+      success: true,
+      trains,
+      stations
+    });
   }
-};
+});
 
-export const createTrain = async (req, res) => {
-  try {
-    const { trainNumber, trainName, source, destination, departureTime, arrivalTime, duration, distanceKm, runsOn, classes } = req.body;
+/**
+ * @desc    Get single train schedule by ID
+ * @route   GET /api/trains/:id
+ * @access  Public
+ */
+export const getTrainById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-    if (isMongoConnected) {
-      const existing = await Train.findOne({ trainNumber });
-      if (existing) return res.status(400).json({ message: 'Train number already exists' });
-
-      const train = await Train.create({
-        trainNumber,
-        trainName,
-        source,
-        destination,
-        departureTime,
-        arrivalTime,
-        duration,
-        distanceKm: Number(distanceKm) || 500,
-        runsOn: runsOn || ['Daily'],
-        classes: classes || [
-          { className: '1A', fare: 2400, totalSeats: 40, availableSeats: 40 },
-          { className: '2A', fare: 1500, totalSeats: 60, availableSeats: 60 },
-          { className: '3A', fare: 950, totalSeats: 80, availableSeats: 80 },
-          { className: 'SL', fare: 380, totalSeats: 120, availableSeats: 120 }
-        ]
+  if (isMongoConnected) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid train ID format'
       });
-      return res.status(201).json(train);
-    } else {
-      const existing = inMemoryTrains.find((t) => t.trainNumber === trainNumber);
-      if (existing) return res.status(400).json({ message: 'Train number already exists' });
-
-      const newTrain = {
-        _id: `trn_${Date.now()}`,
-        trainNumber,
-        trainName,
-        source,
-        destination,
-        departureTime,
-        arrivalTime,
-        duration,
-        distanceKm: Number(distanceKm) || 500,
-        runsOn: runsOn || ['Daily'],
-        classes: classes || [
-          { className: '1A', fare: 2400, totalSeats: 40, availableSeats: 40 },
-          { className: '2A', fare: 1500, totalSeats: 60, availableSeats: 60 },
-          { className: '3A', fare: 950, totalSeats: 80, availableSeats: 80 },
-          { className: 'SL', fare: 380, totalSeats: 120, availableSeats: 120 }
-        ]
-      };
-      inMemoryTrains.push(newTrain);
-      return res.status(201).json(newTrain);
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 
-export const updateTrain = async (req, res) => {
-  try {
-    if (isMongoConnected) {
-      const train = await Train.findById(req.params.id);
-      if (!train) return res.status(404).json({ message: 'Train not found' });
-      Object.assign(train, req.body);
-      const updatedTrain = await train.save();
-      return res.json(updatedTrain);
-    } else {
-      const index = inMemoryTrains.findIndex((t) => t._id === req.params.id);
-      if (index === -1) return res.status(404).json({ message: 'Train not found' });
-      inMemoryTrains[index] = { ...inMemoryTrains[index], ...req.body };
-      return res.json(inMemoryTrains[index]);
+    const train = await Train.findById(id);
+    if (!train) {
+      return res.status(404).json({
+        success: false,
+        message: 'Train schedule not found'
+      });
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(200).json(train);
+  } else {
+    const train = inMemoryTrains.find((t) => t._id === id);
+    if (!train) {
+      return res.status(404).json({
+        success: false,
+        message: 'Train schedule not found'
+      });
+    }
+    return res.status(200).json(train);
   }
-};
+});
 
-export const deleteTrain = async (req, res) => {
-  try {
-    if (isMongoConnected) {
-      const train = await Train.findByIdAndDelete(req.params.id);
-      if (!train) return res.status(404).json({ message: 'Train not found' });
-      return res.json({ message: 'Train deleted successfully' });
-    } else {
-      const index = inMemoryTrains.findIndex((t) => t._id === req.params.id);
-      if (index === -1) return res.status(404).json({ message: 'Train not found' });
-      inMemoryTrains.splice(index, 1);
-      return res.json({ message: 'Train deleted successfully' });
+/**
+ * @desc    Create new train schedule
+ * @route   POST /api/trains
+ * @access  Private/Admin
+ */
+export const createTrain = asyncHandler(async (req, res) => {
+  const {
+    trainNumber,
+    trainName,
+    source,
+    destination,
+    departureTime,
+    arrivalTime,
+    duration,
+    distanceKm,
+    runsOn,
+    classes
+  } = req.body;
+
+  const defaultClasses = [
+    { className: '1A', fare: 2400, totalSeats: 40, availableSeats: 40 },
+    { className: '2A', fare: 1500, totalSeats: 60, availableSeats: 60 },
+    { className: '3A', fare: 950, totalSeats: 80, availableSeats: 80 },
+    { className: 'SL', fare: 380, totalSeats: 120, availableSeats: 120 }
+  ];
+
+  if (isMongoConnected) {
+    const existing = await Train.findOne({ trainNumber: String(trainNumber).trim() });
+    if (existing) {
+      return res.status(409).json({
+        success: false,
+        message: `Train schedule with number #${trainNumber} already exists`
+      });
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+
+    const train = await Train.create({
+      trainNumber: String(trainNumber).trim(),
+      trainName: trainName.trim(),
+      source: source.trim(),
+      destination: destination.trim(),
+      departureTime: departureTime || '06:00 AM',
+      arrivalTime: arrivalTime || '02:00 PM',
+      duration: duration || '8h 00m',
+      distanceKm: Number(distanceKm) || 500,
+      runsOn: runsOn || ['Daily'],
+      classes: classes && classes.length > 0 ? classes : defaultClasses
+    });
+
+    return res.status(201).json(train);
+  } else {
+    const existing = inMemoryTrains.find((t) => t.trainNumber === String(trainNumber).trim());
+    if (existing) {
+      return res.status(409).json({
+        success: false,
+        message: `Train schedule with number #${trainNumber} already exists`
+      });
+    }
+
+    const newTrain = {
+      _id: `trn_${crypto.randomUUID()}`,
+      trainNumber: String(trainNumber).trim(),
+      trainName: trainName.trim(),
+      source: source.trim(),
+      destination: destination.trim(),
+      departureTime: departureTime || '06:00 AM',
+      arrivalTime: arrivalTime || '02:00 PM',
+      duration: duration || '8h 00m',
+      distanceKm: Number(distanceKm) || 500,
+      runsOn: runsOn || ['Daily'],
+      classes: classes && classes.length > 0 ? classes : defaultClasses
+    };
+    inMemoryTrains.push(newTrain);
+
+    return res.status(201).json(newTrain);
   }
-};
+});
+
+/**
+ * @desc    Update train schedule
+ * @route   PUT /api/trains/:id
+ * @access  Private/Admin
+ */
+export const updateTrain = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (isMongoConnected) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid train ID format'
+      });
+    }
+
+    const train = await Train.findById(id);
+    if (!train) {
+      return res.status(404).json({
+        success: false,
+        message: 'Train schedule not found'
+      });
+    }
+
+    const allowedFields = [
+      'trainNumber',
+      'trainName',
+      'source',
+      'destination',
+      'departureTime',
+      'arrivalTime',
+      'duration',
+      'distanceKm',
+      'runsOn',
+      'classes'
+    ];
+
+    const updates = {};
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        updates[field] = req.body[field];
+      }
+    }
+
+    Object.assign(train, updates);
+    const updatedTrain = await train.save();
+    return res.status(200).json(updatedTrain);
+  } else {
+    const index = inMemoryTrains.findIndex((t) => t._id === id);
+    if (index === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Train schedule not found'
+      });
+    }
+
+    const allowedFields = [
+      'trainNumber',
+      'trainName',
+      'source',
+      'destination',
+      'departureTime',
+      'arrivalTime',
+      'duration',
+      'distanceKm',
+      'runsOn',
+      'classes'
+    ];
+
+    const updates = {};
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        updates[field] = req.body[field];
+      }
+    }
+
+    inMemoryTrains[index] = { ...inMemoryTrains[index], ...updates };
+    return res.status(200).json(inMemoryTrains[index]);
+  }
+});
+
+/**
+ * @desc    Delete train schedule
+ * @route   DELETE /api/trains/:id
+ * @access  Private/Admin
+ */
+export const deleteTrain = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (isMongoConnected) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid train ID format'
+      });
+    }
+
+    const train = await Train.findByIdAndDelete(id);
+    if (!train) {
+      return res.status(404).json({
+        success: false,
+        message: 'Train schedule not found'
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Train schedule deleted successfully'
+    });
+  } else {
+    const index = inMemoryTrains.findIndex((t) => t._id === id);
+    if (index === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Train schedule not found'
+      });
+    }
+
+    inMemoryTrains.splice(index, 1);
+    return res.status(200).json({
+      success: true,
+      message: 'Train schedule deleted successfully'
+    });
+  }
+});
