@@ -5,7 +5,7 @@ import TicketView from '../components/TicketView';
 import API_BASE from '../config/api';
 
 export default function MyBookings({ onNotification }) {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -19,9 +19,14 @@ export default function MyBookings({ onNotification }) {
     fetch(`${API_BASE}/api/bookings/my-bookings`, {
       headers: { Authorization: `Bearer ${user.token}` }
     })
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to load bookings');
-        return res.json();
+      .then(async (res) => {
+        const data = await res.json().catch(() => ({}));
+        if (res.status === 401) {
+          logout();
+          throw new Error('Your session has expired. Please log in again.');
+        }
+        if (!res.ok) throw new Error(data.message || 'Failed to load bookings');
+        return data;
       })
       .then((data) => {
         const bookingsList = Array.isArray(data) ? data : data.bookings || [];
@@ -60,8 +65,12 @@ export default function MyBookings({ onNotification }) {
         method: 'PUT',
         headers: { Authorization: `Bearer ${user.token}` }
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
+      if (res.status === 401) {
+        logout();
+        throw new Error('Your session has expired. Please log in again.');
+      }
       if (!res.ok) throw new Error(data.message || 'Cancellation failed');
 
       if (onNotification) {

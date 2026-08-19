@@ -20,7 +20,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
     setError('');
 
     const endpoint = mode === 'login' ? `${API_BASE}/api/auth/login` : `${API_BASE}/api/auth/register`;
-    const payload = mode === 'login' ? { email, password } : { name, email, phone, password, role };
+    const payload = mode === 'login' ? { email, password } : { name, email, phone, password };
 
     try {
       const res = await fetch(endpoint, {
@@ -205,14 +205,6 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Account Role</label>
-                <select className="form-select" value={role} onChange={(e) => setRole(e.target.value)}>
-                  <option value="passenger">Passenger (Book & Manage Tickets)</option>
-                  <option value="admin">Railway Admin (Manage Schedules & Reports)</option>
-                </select>
               </div>
             </>
           )}
