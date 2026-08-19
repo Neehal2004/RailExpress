@@ -2,6 +2,8 @@ import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 import { isMongoConnected } from '../config/db.js';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
+import asyncHandler from '../utils/asyncHandler.js';
 
 // In-Memory store fallback
 export const inMemoryUsers = [
@@ -24,26 +26,95 @@ export const inMemoryUsers = [
 ];
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'rtbs_jwt_secret_key_123', {
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    throw new Error('JWT_SECRET environment variable is not defined');
+  }
+  return jwt.sign({ id }, jwtSecret, {
     expiresIn: '30d'
   });
 };
 
-export const registerUser = async (req, res) => {
-  try {
-    const { name, email, phone, password, role } = req.body;
-    if (!name || !email || !phone || !password) {
-      return res.status(400).json({ message: 'Please provide all required fields' });
+/**
+ * @desc    Register a new user (Strictly passenger role, unique UUID for in-memory)
+ * @route   POST /api/auth/register
+ * @access  Public
+ */
+export const registerUser = asyncHandler(async (req, res) => {
+  const { name, email, phone, password } = req.body;
+  const role = 'passenger'; // Role is strictly server-enforced, never accepted from client
+
+  if (isMongoConnected) {
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(409).json({
+        success: false,
+        message: 'An account with this email address already exists'
+      });
     }
 
-    if (isMongoConnected) {
-      const userExists = await User.findOne({ email });
-      if (userExists) {
-        return res.status(400).json({ message: 'User already exists with this email' });
-      }
+    const user = await User.create({
+      name,
+      email,
+      phone,
+      password,
+      role
+    });
 
-      const user = await User.create({ name, email, phone, password, role: role || 'passenger' });
-      return res.status(201).json({
+    return res.status(201).json({
+      success: true,
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      role: user.role,
+      token: generateToken(user._id)
+    });
+  } else {
+    const userExists = inMemoryUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    if (userExists) {
+      return res.status(409).json({
+        success: false,
+        message: 'An account with this email address already exists'
+      });
+    }
+
+    // Cryptographically unique in-memory ID
+    const newUser = {
+      _id: `usr_${crypto.randomUUID()}`,
+      name,
+      email,
+      phone,
+      passwordHash: bcrypt.hashSync(password, 10),
+      role
+    };
+    inMemoryUsers.push(newUser);
+
+    return res.status(201).json({
+      success: true,
+      _id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      phone: newUser.phone,
+      role: newUser.role,
+      token: generateToken(newUser._id)
+    });
+  }
+});
+
+/**
+ * @desc    Authenticate user & get token
+ * @route   POST /api/auth/login
+ * @access  Public
+ */
+export const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  if (isMongoConnected) {
+    const user = await User.findOne({ email });
+    if (user && (await user.matchPassword(password))) {
+      return res.status(200).json({
+        success: true,
         _id: user._id,
         name: user.name,
         email: user.email,
@@ -51,72 +122,36 @@ export const registerUser = async (req, res) => {
         role: user.role,
         token: generateToken(user._id)
       });
-    } else {
-      const userExists = inMemoryUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
-      if (userExists) {
-        return res.status(400).json({ message: 'User already exists with this email' });
-      }
-
-      const newUser = {
-        _id: `usr_${Date.now()}`,
-        name,
-        email,
-        phone,
-        passwordHash: bcrypt.hashSync(password, 10),
-        role: role || 'passenger'
-      };
-      inMemoryUsers.push(newUser);
-
-      return res.status(201).json({
-        _id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
-        phone: newUser.phone,
-        role: newUser.role,
-        token: generateToken(newUser._id)
+    }
+  } else {
+    const user = inMemoryUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    if (user && bcrypt.compareSync(password, user.passwordHash)) {
+      return res.status(200).json({
+        success: true,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        token: generateToken(user._id)
       });
     }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
   }
-};
 
-export const loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+  return res.status(401).json({
+    success: false,
+    message: 'Invalid email or password'
+  });
+});
 
-    if (isMongoConnected) {
-      const user = await User.findOne({ email });
-      if (user && (await user.matchPassword(password))) {
-        return res.json({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          role: user.role,
-          token: generateToken(user._id)
-        });
-      }
-    } else {
-      const user = inMemoryUsers.find((u) => u.email.toLowerCase() === email.toLowerCase());
-      if (user && bcrypt.compareSync(password, user.passwordHash)) {
-        return res.json({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          phone: user.phone,
-          role: user.role,
-          token: generateToken(user._id)
-        });
-      }
-    }
-
-    res.status(401).json({ message: 'Invalid email or password' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-export const getUserProfile = async (req, res) => {
-  res.json(req.user);
-};
+/**
+ * @desc    Get user profile
+ * @route   GET /api/auth/profile
+ * @access  Private
+ */
+export const getUserProfile = asyncHandler(async (req, res) => {
+  res.status(200).json({
+    success: true,
+    user: req.user
+  });
+});
