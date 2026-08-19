@@ -4,7 +4,7 @@ import { ShieldCheck, Plus, Trash2, Edit3, DollarSign, Ticket, Train, Users, Dow
 import API_BASE from '../config/api';
 
 export default function AdminDashboard({ onNotification }) {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [activeTab, setActiveTab] = useState('schedules');
   const [stats, setStats] = useState(null);
   const [trains, setTrains] = useState([]);
@@ -20,16 +20,28 @@ export default function AdminDashboard({ onNotification }) {
     const headers = { Authorization: `Bearer ${user.token}` };
 
     Promise.all([
-      fetch(`${API_BASE}/api/admin/stats`, { headers }).then((res) => res.json()),
+      fetch(`${API_BASE}/api/admin/stats`, { headers }).then(async (res) => {
+        if (res.status === 401) { logout(); throw new Error('Session expired'); }
+        return res.json();
+      }),
       fetch(`${API_BASE}/api/trains`).then((res) => res.json()),
-      fetch(`${API_BASE}/api/admin/bookings`, { headers }).then((res) => res.json()),
-      fetch(`${API_BASE}/api/admin/payments`, { headers }).then((res) => res.json())
+      fetch(`${API_BASE}/api/admin/bookings`, { headers }).then(async (res) => {
+        if (res.status === 401) { logout(); throw new Error('Session expired'); }
+        return res.json();
+      }),
+      fetch(`${API_BASE}/api/admin/payments`, { headers }).then(async (res) => {
+        if (res.status === 401) { logout(); throw new Error('Session expired'); }
+        return res.json();
+      })
     ])
       .then(([statsData, trainsData, bookingsData, paymentsData]) => {
         if (statsData) setStats(statsData);
-        if (trainsData.trains) setTrains(trainsData.trains);
+        if (trainsData?.trains) setTrains(trainsData.trains);
+        else if (Array.isArray(trainsData)) setTrains(trainsData);
         if (Array.isArray(bookingsData)) setAllBookings(bookingsData);
+        else if (bookingsData?.bookings) setAllBookings(bookingsData.bookings);
         if (Array.isArray(paymentsData)) setAllPayments(paymentsData);
+        else if (paymentsData?.payments) setAllPayments(paymentsData.payments);
         setLastSyncTime(new Date());
         setLoading(false);
       })
