@@ -8,8 +8,8 @@ A modern, fast, and user-friendly full-stack MERN (MongoDB, Express.js, React, N
 
 | Service | Live URL | Status |
 | :--- | :--- | :---: |
-| **Frontend Web App** | 🔗 **[https://rtbs-frontend-vuvv.onrender.com](https://rtbs-frontend-vuvv.onrender.com)** | 🟢 Online |
-| **Backend REST API** | ⚡ **[https://rtbs-backend-vuvv.onrender.com](https://rtbs-backend-vuvv.onrender.com)** | 🟢 Online |
+| **Frontend Web App** | 🔗 **[https://rtbs-frontend.onrender.com](https://rtbs-frontend.onrender.com)** | 🟢 Online |
+| **Backend REST API** | ⚡ **[https://rtbs-backend-lwch.onrender.com](https://rtbs-backend-lwch.onrender.com)** | 🟢 Online |
 | **GitHub Repository** | 📂 **[https://github.com/Neehal2004/RailExpress](https://github.com/Neehal2004/RailExpress)** | 🟢 Active |
 
 ---

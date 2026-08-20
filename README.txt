@@ -5,8 +5,8 @@
 
 LIVE DEMO & CLOUD DEPLOYMENT LINKS:
 --------------------------------------------------------------------------------
-* Live Web App (Frontend):   https://rtbs-frontend-vuvv.onrender.com
-* Live API Server (Backend): https://rtbs-backend-vuvv.onrender.com
+* Live Web App (Frontend):   https://rtbs-frontend.onrender.com
+* Live API Server (Backend): https://rtbs-backend-lwch.onrender.com
 * GitHub Repository:         https://github.com/Neehal2004/RailExpress
 
 ================================================================================
