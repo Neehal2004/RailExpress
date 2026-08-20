@@ -42,6 +42,9 @@ app.use('/api/trains', trainRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Favicon route to prevent unnecessary 404 error log noise from browser requests
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 // Root route with Live Health Status (database host is never exposed publicly)
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -80,18 +83,12 @@ function startServer(port, retryCount = 0) {
   });
 }
 
-// Bootstrap server after awaiting database connection
-async function bootstrap() {
-  try {
-    await connectDB();
-  } catch (err) {
-    if (process.env.NODE_ENV === 'production') {
-      console.error('[Server Fatal] Failed to connect to database in production mode. Process exiting.');
-      process.exit(1);
-    }
+startServer(DEFAULT_PORT);
+
+// Connect to MongoDB
+connectDB().catch((err) => {
+  if (process.env.NODE_ENV === 'production') {
+    console.error('[Server Fatal] Failed to connect to database in production mode. Process exiting.');
+    process.exit(1);
   }
-
-  startServer(DEFAULT_PORT);
-}
-
-bootstrap();
+});
