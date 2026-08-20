@@ -151,24 +151,16 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
         {/* Quick Demo Credentials Buttons */}
         <div style={{ marginBottom: '16px', padding: '10px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', border: '1px dashed rgba(59, 130, 246, 0.3)' }}>
           <span style={{ fontSize: '0.72rem', color: 'var(--accent-cyan)', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
-            ⚡ One-Click Quick Demo Login:
+            ⚡ Quick Passenger Demo Login:
           </span>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
+          <div>
             <button
               type="button"
               onClick={() => handleDemoLogin('john@example.com', 'User@123')}
               className="btn btn-sm btn-secondary"
               style={{ fontSize: '0.75rem', width: '100%' }}
             >
-              <UserCheck size={14} className="text-cyan-400" /> Passenger Demo
-            </button>
-            <button
-              type="button"
-              onClick={() => handleDemoLogin('admin@railway.com', 'Admin@123')}
-              className="btn btn-sm btn-secondary"
-              style={{ fontSize: '0.75rem', width: '100%', borderColor: 'rgba(245, 158, 11, 0.4)', color: '#fbbf24' }}
-            >
-              <Shield size={14} /> Admin Demo
+              <UserCheck size={14} className="text-cyan-400" /> Passenger Demo (John Doe)
             </button>
           </div>
         </div>
