@@ -7,7 +7,7 @@ export default function TrainCard({ train, onSelectBookingClass }) {
   const currentClassObj = train.classes.find((c) => c.className === selectedClass) || train.classes[0];
 
   return (
-    <div className="glass-card" style={{ padding: '20px', marginBottom: '20px' }}>
+    <div className="rail-card" style={{ padding: '18px 20px', marginBottom: '16px' }}>
       {/* Train Header Info */}
       <div
         style={{
@@ -16,8 +16,8 @@ export default function TrainCard({ train, onSelectBookingClass }) {
           alignItems: 'flex-start',
           flexWrap: 'wrap',
           gap: '10px',
-          borderBottom: '1px solid var(--border-color)',
-          paddingBottom: '14px',
+          borderBottom: '1px solid var(--border-subtle)',
+          paddingBottom: '12px',
           marginBottom: '14px'
         }}
       >
@@ -25,26 +25,27 @@ export default function TrainCard({ train, onSelectBookingClass }) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span
               style={{
-                background: 'rgba(59, 130, 246, 0.15)',
+                background: 'rgba(37, 99, 235, 0.15)',
                 color: '#60a5fa',
-                padding: '4px 10px',
-                borderRadius: '6px',
+                padding: '3px 8px',
+                borderRadius: 'var(--radius-xs)',
                 fontWeight: 700,
-                fontSize: '0.85rem'
+                fontSize: '0.8rem',
+                fontFamily: 'var(--font-mono)'
               }}
             >
               #{train.trainNumber}
             </span>
-            <h3 style={{ fontSize: '1.2rem', color: '#fff' }}>{train.trainName}</h3>
+            <h3 style={{ fontSize: '1.15rem', color: '#fff', fontWeight: 700 }}>{train.trainName}</h3>
           </div>
-          <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            Runs On: {train.runsOn.join(', ')} • {train.distanceKm} km
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+            Runs On: <strong style={{ color: 'var(--text-secondary)' }}>{train.runsOn.join(', ')}</strong> • {train.distanceKm} km
           </p>
         </div>
 
         <div>
-          <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Fare starts from</span>
-          <div style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Starting Fare</span>
+          <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#34d399' }}>
             ₹{currentClassObj?.fare}
           </div>
         </div>
@@ -57,21 +58,22 @@ export default function TrainCard({ train, onSelectBookingClass }) {
           gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))',
           alignItems: 'center',
           gap: '12px',
-          background: 'rgba(15, 23, 42, 0.5)',
-          padding: '14px',
+          background: '#0f172a',
+          padding: '12px 16px',
           borderRadius: 'var(--radius-sm)',
-          marginBottom: '16px'
+          border: '1px solid var(--border-subtle)',
+          marginBottom: '14px'
         }}
       >
         {/* Source */}
         <div>
-          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fff' }}>{train.departureTime}</div>
-          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>{train.source}</div>
+          <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff' }}>{train.departureTime}</div>
+          <div style={{ fontSize: '0.825rem', fontWeight: 500, color: 'var(--text-secondary)' }}>{train.source}</div>
         </div>
 
         {/* Travel Duration Indicator */}
         <div style={{ textAlign: 'center' }}>
-          <span style={{ fontSize: '0.72rem', color: 'var(--accent-cyan)', fontWeight: 600 }}>{train.duration}</span>
+          <span style={{ fontSize: '0.7rem', color: '#60a5fa', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{train.duration}</span>
           <div
             style={{
               display: 'flex',
@@ -82,32 +84,32 @@ export default function TrainCard({ train, onSelectBookingClass }) {
               margin: '2px 0'
             }}
           >
-            <div style={{ height: '2px', flex: 1, background: 'rgba(255,255,255,0.15)' }} />
-            <ArrowRight size={14} color="var(--accent-cyan)" />
-            <div style={{ height: '2px', flex: 1, background: 'rgba(255,255,255,0.15)' }} />
+            <div style={{ height: '1px', flex: 1, background: 'var(--border-color)' }} />
+            <ArrowRight size={14} color="#60a5fa" />
+            <div style={{ height: '1px', flex: 1, background: 'var(--border-color)' }} />
           </div>
-          <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>Direct</span>
+          <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Direct Express</span>
         </div>
 
         {/* Destination */}
         <div>
-          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fff' }}>{train.arrivalTime}</div>
-          <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
+          <div style={{ fontSize: '1.1rem', fontWeight: 800, color: '#fff' }}>{train.arrivalTime}</div>
+          <div style={{ fontSize: '0.825rem', fontWeight: 500, color: 'var(--text-secondary)' }}>
             {train.destination}
           </div>
         </div>
       </div>
 
       {/* Class Selector Badges */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
-          Select Class & Availability:
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+          Select Class Quota & Seat Availability:
         </div>
 
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(95px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
             gap: '8px'
           }}
         >
@@ -123,33 +125,26 @@ export default function TrainCard({ train, onSelectBookingClass }) {
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setSelectedClass(cls.className); }}
                 aria-pressed={isSelected}
                 aria-label={`Select class ${cls.className}, fare ₹${cls.fare}, ${cls.availableSeats} seats available`}
-                style={{
-                  padding: '10px 8px',
-                  borderRadius: 'var(--radius-sm)',
-                  cursor: 'pointer',
-                  background: isSelected ? 'rgba(37, 99, 235, 0.25)' : 'rgba(255, 255, 255, 0.03)',
-                  border: isSelected ? '1.5px solid var(--accent-cyan)' : '1px solid var(--border-color)',
-                  transition: 'all 0.2s ease',
-                  touchAction: 'manipulation'
-                }}
+                className={`quota-box ${isSelected ? 'quota-box-selected' : ''}`}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontWeight: 800, fontSize: '0.88rem', color: isSelected ? '#fff' : 'var(--text-secondary)' }}>
+                  <span style={{ fontWeight: 800, fontSize: '0.85rem', color: isSelected ? '#fff' : 'var(--text-primary)' }}>
                     {cls.className}
                   </span>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent-cyan)' }}>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#34d399' }}>
                     ₹{cls.fare}
                   </span>
                 </div>
                 <div
                   style={{
-                    fontSize: '0.72rem',
+                    fontSize: '0.7rem',
                     fontWeight: 700,
                     marginTop: '4px',
+                    fontFamily: 'var(--font-mono)',
                     color: isAvailable ? '#34d399' : '#f87171'
                   }}
                 >
-                  {isAvailable ? `AVL ${cls.availableSeats}` : 'WL / Full'}
+                  {isAvailable ? `AVL ${cls.availableSeats}` : 'WL / FULL'}
                 </div>
               </div>
             );
@@ -157,14 +152,14 @@ export default function TrainCard({ train, onSelectBookingClass }) {
         </div>
 
         {/* Action Button */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
           <button
             onClick={() => onSelectBookingClass(train, currentClassObj)}
             className="btn btn-primary"
             style={{ width: '100%', maxWidth: '280px' }}
             aria-label={`Book ticket for ${train.trainName} in class ${selectedClass} for ₹${currentClassObj?.fare}`}
           >
-            <CheckCircle size={18} /> Book {selectedClass} - ₹{currentClassObj?.fare}
+            <CheckCircle size={16} /> Book {selectedClass} • ₹{currentClassObj?.fare}
           </button>
         </div>
       </div>

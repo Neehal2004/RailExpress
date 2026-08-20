@@ -188,12 +188,12 @@ export default function AdminDashboard({ onNotification }) {
 
   if (!user || user.role !== 'admin') {
     return (
-      <div style={{ maxWidth: '600px', margin: '60px auto', padding: '0 16px', textAlign: 'center' }}>
-        <div className="glass-panel" style={{ padding: '32px' }}>
-          <AlertCircle size={48} className="text-rose-400" style={{ margin: '0 auto 16px auto' }} />
-          <h2>Access Restricted</h2>
-          <p style={{ color: 'var(--text-muted)', marginTop: '8px', fontSize: '0.9rem' }}>
-            Railway Administrator credentials are required to view this panel.
+      <div style={{ maxWidth: '500px', margin: '60px auto', padding: '0 16px', textAlign: 'center' }}>
+        <div className="rail-panel" style={{ padding: '32px' }}>
+          <AlertCircle size={44} style={{ color: '#f87171', margin: '0 auto 14px auto' }} />
+          <h3 style={{ fontSize: '1.1rem', color: '#fff' }}>Access Restricted</h3>
+          <p style={{ color: 'var(--text-muted)', marginTop: '8px', fontSize: '0.85rem' }}>
+            Railway Administrator credentials are required to view this control center.
           </p>
         </div>
       </div>
@@ -201,79 +201,79 @@ export default function AdminDashboard({ onNotification }) {
   }
 
   return (
-    <div style={{ maxWidth: '1280px', margin: '24px auto', padding: '0 16px' }}>
+    <div style={{ maxWidth: '1280px', margin: '20px auto', padding: '0 16px' }}>
       {/* Top Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <ShieldCheck size={24} color="#fbbf24" />
-            <h2 style={{ fontSize: 'clamp(1.35rem, 4vw, 1.75rem)', color: '#fff' }}>Railway Admin Control Center</h2>
+            <ShieldCheck size={22} color="#fbbf24" />
+            <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.75rem)', color: '#fff', fontWeight: 800 }}>Railway Admin Control Center</h2>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-            <Radio size={14} className="text-emerald-400" />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+            <Radio size={14} style={{ color: '#34d399' }} />
             <span>Live Auto-Sync (Updated {lastSyncTime.toLocaleTimeString()})</span>
           </div>
         </div>
 
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button onClick={exportReportJSON} className="btn btn-secondary btn-sm">
-            <Download size={16} /> Export JSON Report
+            <Download size={15} /> Export JSON Report
           </button>
           <button onClick={() => fetchAdminData(false)} className="btn btn-secondary btn-sm">
-            <RefreshCw size={16} /> Sync Now
+            <RefreshCw size={15} /> Sync Now
           </button>
         </div>
       </div>
 
       {/* Analytics Executive Cards Grid */}
       {stats && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '28px' }}>
-          <div className="glass-card" style={{ padding: '18px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '24px' }}>
+          <div className="rail-card" style={{ padding: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>TOTAL REVENUE</span>
-              <DollarSign size={20} className="text-emerald-400" />
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>TOTAL REVENUE</span>
+              <DollarSign size={18} style={{ color: '#34d399' }} />
             </div>
-            <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#34d399', marginTop: '6px' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#34d399', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>
               ₹{stats.totalRevenue?.toLocaleString()}
             </div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
               Refunded: ₹{stats.totalRefunds?.toLocaleString()}
             </div>
           </div>
 
-          <div className="glass-card" style={{ padding: '18px' }}>
+          <div className="rail-card" style={{ padding: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>TOTAL BOOKINGS</span>
-              <Ticket size={20} className="text-cyan-400" />
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>TOTAL BOOKINGS</span>
+              <Ticket size={18} style={{ color: '#60a5fa' }} />
             </div>
-            <div style={{ fontSize: '1.65rem', fontWeight: 800, color: 'var(--accent-cyan)', marginTop: '6px' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#60a5fa', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>
               {stats.totalBookings}
             </div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
               Confirmed: {stats.activeBookings} • Cancelled: {stats.cancelledBookings}
             </div>
           </div>
 
-          <div className="glass-card" style={{ padding: '18px' }}>
+          <div className="rail-card" style={{ padding: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>TRAIN SCHEDULES</span>
-              <Train size={20} className="text-blue-400" />
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>TRAIN SCHEDULES</span>
+              <Train size={18} style={{ color: '#a78bfa' }} />
             </div>
-            <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#60a5fa', marginTop: '6px' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#a78bfa', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>
               {stats.totalTrains}
             </div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px' }}>Active Superfast Routes</div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>Active Superfast Routes</div>
           </div>
 
-          <div className="glass-card" style={{ padding: '18px' }}>
+          <div className="rail-card" style={{ padding: '16px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-              <span style={{ fontSize: '0.78rem', fontWeight: 600 }}>REGISTERED PASSENGERS</span>
-              <Users size={20} className="text-amber-400" />
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase' }}>REGISTERED USERS</span>
+              <Users size={18} style={{ color: '#fbbf24' }} />
             </div>
-            <div style={{ fontSize: '1.65rem', fontWeight: 800, color: '#fbbf24', marginTop: '6px' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#fbbf24', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>
               {stats.totalUsers}
             </div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '4px' }}>Active User Accounts</div>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>Active Passenger Accounts</div>
           </div>
         </div>
       )}
@@ -282,18 +282,18 @@ export default function AdminDashboard({ onNotification }) {
       <div
         style={{
           display: 'flex',
-          gap: '8px',
+          gap: '6px',
           borderBottom: '1px solid var(--border-color)',
           marginBottom: '20px',
           overflowX: 'auto',
           WebkitOverflowScrolling: 'touch',
-          paddingBottom: '4px'
+          paddingBottom: '2px'
         }}
       >
         {[
-          { id: 'schedules', label: 'Train Schedules', icon: <Train size={16} /> },
-          { id: 'reports', label: 'Bookings Report', icon: <Ticket size={16} /> },
-          { id: 'payments', label: 'Payment Ledger', icon: <DollarSign size={16} /> }
+          { id: 'schedules', label: 'Train Schedules', icon: <Train size={15} /> },
+          { id: 'reports', label: 'Bookings Report', icon: <Ticket size={15} /> },
+          { id: 'payments', label: 'Payment Ledger', icon: <DollarSign size={15} /> }
         ].map((tab) => (
           <button
             key={tab.id}
@@ -301,14 +301,14 @@ export default function AdminDashboard({ onNotification }) {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '8px',
-              padding: '10px 16px',
-              minHeight: '44px',
-              borderBottom: activeTab === tab.id ? '2px solid var(--accent-cyan)' : '2px solid transparent',
+              gap: '6px',
+              padding: '8px 14px',
+              minHeight: '40px',
+              borderBottom: activeTab === tab.id ? '2px solid #3b82f6' : '2px solid transparent',
               background: 'none',
-              color: activeTab === tab.id ? 'var(--accent-cyan)' : 'var(--text-secondary)',
+              color: activeTab === tab.id ? '#60a5fa' : 'var(--text-secondary)',
               fontWeight: 700,
-              fontSize: '0.9rem',
+              fontSize: '0.85rem',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
               touchAction: 'manipulation'
@@ -322,43 +322,43 @@ export default function AdminDashboard({ onNotification }) {
       {/* Tab 1: Train Schedule Management */}
       {activeTab === 'schedules' && (
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
-            <h3 style={{ fontSize: '1.15rem', color: '#fff' }}>Train Schedules List</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
+            <h3 style={{ fontSize: '1.1rem', color: '#fff', fontWeight: 700 }}>Train Schedules List</h3>
             <button
               onClick={() => { resetForm(); setEditingTrain(null); setShowAddTrainModal(true); }}
               className="btn btn-primary btn-sm"
             >
-              <Plus size={16} /> Add New Train Schedule
+              <Plus size={15} /> Add New Schedule
             </button>
           </div>
 
-          <div className="glass-panel table-responsive">
-            <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', fontSize: '0.85rem', textAlign: 'left' }}>
+          <div className="rail-panel table-responsive">
+            <table className="rail-table" style={{ minWidth: '700px' }}>
               <thead>
-                <tr style={{ background: 'rgba(15,23,42,0.8)', color: 'var(--text-muted)' }}>
-                  <th style={{ padding: '12px' }}>Train #</th>
-                  <th style={{ padding: '12px' }}>Train Name</th>
-                  <th style={{ padding: '12px' }}>Route (Source → Destination)</th>
-                  <th style={{ padding: '12px' }}>Timings & Duration</th>
-                  <th style={{ padding: '12px' }}>Classes Fares</th>
-                  <th style={{ padding: '12px', textAlign: 'right' }}>Actions</th>
+                <tr>
+                  <th>Train #</th>
+                  <th>Train Name</th>
+                  <th>Route & Distance</th>
+                  <th>Timings & Duration</th>
+                  <th>Classes & Availability</th>
+                  <th style={{ textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {trains.map((t) => (
-                  <tr key={t._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: '#fff' }}>
-                    <td style={{ padding: '12px', fontWeight: 800, color: 'var(--accent-cyan)' }}>#{t.trainNumber}</td>
-                    <td style={{ padding: '12px', fontWeight: 600 }}>{t.trainName}</td>
-                    <td style={{ padding: '12px' }}>{t.source} → {t.destination} ({t.distanceKm} km)</td>
-                    <td style={{ padding: '12px' }}>{t.departureTime} - {t.arrivalTime} ({t.duration})</td>
-                    <td style={{ padding: '12px' }}>
+                  <tr key={t._id}>
+                    <td style={{ fontWeight: 800, color: '#60a5fa', fontFamily: 'var(--font-mono)' }}>#{t.trainNumber}</td>
+                    <td style={{ fontWeight: 600 }}>{t.trainName}</td>
+                    <td>{t.source} → {t.destination} ({t.distanceKm} km)</td>
+                    <td>{t.departureTime} - {t.arrivalTime} ({t.duration})</td>
+                    <td>
                       {t.classes.map((c) => (
-                        <span key={c.className} style={{ background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px', marginRight: '4px', fontSize: '0.75rem', display: 'inline-block', marginBottom: '2px' }}>
+                        <span key={c.className} style={{ background: '#0f172a', border: '1px solid var(--border-subtle)', padding: '2px 6px', borderRadius: 'var(--radius-xs)', marginRight: '4px', fontSize: '0.725rem', display: 'inline-block', marginBottom: '2px' }}>
                           {c.className}: ₹{c.fare} (AVL: {c.availableSeats})
                         </span>
                       ))}
                     </td>
-                    <td style={{ padding: '12px', textAlign: 'right' }}>
+                    <td style={{ textAlign: 'right' }}>
                       <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
                         <button onClick={() => openEditModal(t)} className="btn btn-sm btn-secondary" title="Edit" aria-label={`Edit ${t.trainName}`}>
                           <Edit3 size={14} />
@@ -379,30 +379,30 @@ export default function AdminDashboard({ onNotification }) {
       {/* Tab 2: Bookings Report */}
       {activeTab === 'reports' && (
         <div>
-          <h3 style={{ fontSize: '1.15rem', color: '#fff', marginBottom: '16px' }}>Master Booking Records ({allBookings.length})</h3>
-          <div className="glass-panel table-responsive">
-            <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', fontSize: '0.85rem', textAlign: 'left' }}>
+          <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '14px', fontWeight: 700 }}>Master Booking Records ({allBookings.length})</h3>
+          <div className="rail-panel table-responsive">
+            <table className="rail-table" style={{ minWidth: '700px' }}>
               <thead>
-                <tr style={{ background: 'rgba(15,23,42,0.8)', color: 'var(--text-muted)' }}>
-                  <th style={{ padding: '12px' }}>PNR</th>
-                  <th style={{ padding: '12px' }}>Passenger User</th>
-                  <th style={{ padding: '12px' }}>Train</th>
-                  <th style={{ padding: '12px' }}>Travel Date</th>
-                  <th style={{ padding: '12px' }}>Class & Seats</th>
-                  <th style={{ padding: '12px' }}>Total Fare</th>
-                  <th style={{ padding: '12px' }}>Status</th>
+                <tr>
+                  <th>PNR</th>
+                  <th>Passenger User</th>
+                  <th>Train</th>
+                  <th>Travel Date</th>
+                  <th>Class & Seats</th>
+                  <th>Total Fare</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {allBookings.map((b) => (
-                  <tr key={b._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: '#fff' }}>
-                    <td style={{ padding: '12px', fontWeight: 800, color: 'var(--accent-cyan)' }}>{b.pnr}</td>
-                    <td style={{ padding: '12px' }}>{b.userId?.name} ({b.userId?.email})</td>
-                    <td style={{ padding: '12px' }}>{b.trainId?.trainName} (#{b.trainId?.trainNumber})</td>
-                    <td style={{ padding: '12px' }}>{b.travelDate}</td>
-                    <td style={{ padding: '12px' }}>{b.classType} ({b.passengers?.length} pax)</td>
-                    <td style={{ padding: '12px', fontWeight: 700 }}>₹{b.totalFare}</td>
-                    <td style={{ padding: '12px' }}>
+                  <tr key={b._id}>
+                    <td style={{ fontWeight: 800, color: '#60a5fa', fontFamily: 'var(--font-mono)' }}>{b.pnr}</td>
+                    <td>{b.userId?.name} ({b.userId?.email})</td>
+                    <td>{b.trainId?.trainName} (#{b.trainId?.trainNumber})</td>
+                    <td>{b.travelDate}</td>
+                    <td>{b.classType} ({b.passengers?.length} pax)</td>
+                    <td style={{ fontWeight: 700, color: '#34d399' }}>₹{b.totalFare}</td>
+                    <td>
                       <span className={`badge ${b.status === 'Cancelled' ? 'badge-cancelled' : 'badge-confirmed'}`}>
                         {b.status}
                       </span>
@@ -418,32 +418,32 @@ export default function AdminDashboard({ onNotification }) {
       {/* Tab 3: Payment Ledger */}
       {activeTab === 'payments' && (
         <div>
-          <h3 style={{ fontSize: '1.15rem', color: '#fff', marginBottom: '16px' }}>Payment Gateway Ledger ({allPayments.length})</h3>
-          <div className="glass-panel table-responsive">
-            <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', fontSize: '0.85rem', textAlign: 'left' }}>
+          <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '14px', fontWeight: 700 }}>Payment Gateway Ledger ({allPayments.length})</h3>
+          <div className="rail-panel table-responsive">
+            <table className="rail-table" style={{ minWidth: '700px' }}>
               <thead>
-                <tr style={{ background: 'rgba(15,23,42,0.8)', color: 'var(--text-muted)' }}>
-                  <th style={{ padding: '12px' }}>Txn ID</th>
-                  <th style={{ padding: '12px' }}>User</th>
-                  <th style={{ padding: '12px' }}>Amount</th>
-                  <th style={{ padding: '12px' }}>Method</th>
-                  <th style={{ padding: '12px' }}>Status</th>
-                  <th style={{ padding: '12px' }}>Date</th>
+                <tr>
+                  <th>Txn ID</th>
+                  <th>User</th>
+                  <th>Amount</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                  <th>Date</th>
                 </tr>
               </thead>
               <tbody>
                 {allPayments.map((p) => (
-                  <tr key={p._id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', color: '#fff' }}>
-                    <td style={{ padding: '12px', fontWeight: 700, color: 'var(--accent-cyan)' }}>{p.transactionId}</td>
-                    <td style={{ padding: '12px' }}>{p.userId?.name}</td>
-                    <td style={{ padding: '12px', fontWeight: 700 }}>₹{p.amount}</td>
-                    <td style={{ padding: '12px' }}>{p.paymentMethod}</td>
-                    <td style={{ padding: '12px' }}>
+                  <tr key={p._id}>
+                    <td style={{ fontWeight: 700, color: '#60a5fa', fontFamily: 'var(--font-mono)' }}>{p.transactionId}</td>
+                    <td>{p.userId?.name}</td>
+                    <td style={{ fontWeight: 700, color: '#34d399' }}>₹{p.amount}</td>
+                    <td>{p.paymentMethod}</td>
+                    <td>
                       <span className={`badge ${p.status === 'Refunded' ? 'badge-warning' : 'badge-confirmed'}`}>
                         {p.status}
                       </span>
                     </td>
-                    <td style={{ padding: '12px', color: 'var(--text-muted)' }}>
+                    <td style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>
                       {new Date(p.paymentDate).toLocaleString()}
                     </td>
                   </tr>
@@ -458,12 +458,12 @@ export default function AdminDashboard({ onNotification }) {
       {showAddTrainModal && (
         <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="train-modal-title">
           <div className="modal-content" style={{ maxWidth: '600px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '14px', marginBottom: '16px' }}>
-              <h3 id="train-modal-title" style={{ fontSize: '1.25rem', color: '#fff' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '16px' }}>
+              <h3 id="train-modal-title" style={{ fontSize: '1.15rem', color: '#fff', fontWeight: 800 }}>
                 {editingTrain ? `Edit Train #${editingTrain.trainNumber}` : 'Add New Train Schedule'}
               </h3>
               <button onClick={() => setShowAddTrainModal(false)} className="btn btn-sm btn-secondary" aria-label="Close modal">
-                <X size={18} />
+                <X size={16} />
               </button>
             </div>
 
@@ -510,7 +510,7 @@ export default function AdminDashboard({ onNotification }) {
                 <input type="number" required placeholder="308" className="form-input" value={distanceKm} onChange={(e) => setDistanceKm(e.target.value)} />
               </div>
 
-              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '20px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '16px', flexWrap: 'wrap' }}>
                 <button type="button" onClick={() => setShowAddTrainModal(false)} className="btn btn-secondary" style={{ flex: '1 1 100px' }}>Cancel</button>
                 <button type="submit" className="btn btn-primary" style={{ flex: '1 1 180px' }}>{editingTrain ? 'Save Changes' : 'Create Schedule'}</button>
               </div>

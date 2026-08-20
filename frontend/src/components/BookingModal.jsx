@@ -63,23 +63,23 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
             justifyContent: 'space-between',
             alignItems: 'center',
             borderBottom: '1px solid var(--border-color)',
-            paddingBottom: '14px',
+            paddingBottom: '12px',
             marginBottom: '16px'
           }}
         >
           <div>
-            <h3 id="booking-modal-title" style={{ fontSize: '1.25rem', color: '#fff' }}>Passenger Details</h3>
+            <h3 id="booking-modal-title" style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 800 }}>Passenger Reservation Form</h3>
             <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              {train.trainName} ({train.trainNumber}) • Class: <span style={{ color: 'var(--accent-cyan)', fontWeight: 700 }}>{selectedClass.className}</span> • Date: {travelDate}
+              {train.trainName} (#{train.trainNumber}) • Class: <span style={{ color: '#60a5fa', fontWeight: 700 }}>{selectedClass.className}</span> • Date: {travelDate}
             </p>
           </div>
           <button onClick={onClose} className="btn btn-sm btn-secondary" aria-label="Close modal">
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
         {error && (
-          <div role="alert" style={{ background: 'var(--danger-bg)', color: '#f87171', padding: '10px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem' }}>
+          <div role="alert" style={{ background: 'var(--status-cancelled-bg)', color: '#f87171', border: '1px solid var(--status-cancelled-border)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '16px', fontSize: '0.825rem' }}>
             {error}
           </div>
         )}
@@ -89,15 +89,15 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
             <div
               key={index}
               style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: '1px solid var(--border-color)',
+                background: '#0f172a',
+                border: '1px solid var(--border-subtle)',
                 borderRadius: 'var(--radius-sm)',
                 padding: '14px',
-                marginBottom: '14px'
+                marginBottom: '12px'
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--accent-cyan)' }}>
+                <span style={{ fontSize: '0.825rem', fontWeight: 700, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Passenger #{index + 1}
                 </span>
                 {passengers.length > 1 && (
@@ -105,9 +105,9 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
                     type="button"
                     onClick={() => removePassenger(index)}
                     aria-label={`Remove passenger ${index + 1}`}
-                    style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', padding: '4px' }}
+                    style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', padding: '2px' }}
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={15} />
                   </button>
                 )}
               </div>
@@ -175,18 +175,19 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
               type="button"
               onClick={addPassenger}
               className="btn btn-secondary"
-              style={{ width: '100%', marginBottom: '16px', borderStyle: 'dashed' }}
+              style={{ width: '100%', marginBottom: '16px', borderStyle: 'dashed', minHeight: '40px' }}
             >
-              <Plus size={16} /> Add Passenger ({passengers.length}/4)
+              <Plus size={15} /> Add Passenger ({passengers.length}/4)
             </button>
           )}
 
           {/* Pricing Breakdown */}
           <div
             style={{
-              background: 'rgba(15, 23, 42, 0.8)',
-              padding: '14px',
+              background: '#0f172a',
+              padding: '12px 16px',
               borderRadius: 'var(--radius-sm)',
+              border: '1px solid var(--border-subtle)',
               marginBottom: '16px',
               display: 'flex',
               justifyContent: 'space-between',
@@ -196,14 +197,14 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
             }}
           >
             <div>
-              <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+              <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 ₹{selectedClass.fare} × {passengers.length} Passenger(s)
               </div>
-              <div style={{ fontSize: '0.75rem', color: '#34d399' }}>Includes all taxes & railway reservation fees</div>
+              <div style={{ fontSize: '0.725rem', color: '#34d399', fontWeight: 600 }}>Includes GST & IRCTC reservation fees</div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Total Amount</span>
-              <div style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--accent-cyan)' }}>
+              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Total Amount</span>
+              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#34d399' }}>
                 ₹{selectedClass.fare * passengers.length}
               </div>
             </div>
@@ -214,7 +215,7 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
               Cancel
             </button>
             <button type="submit" className="btn btn-primary" style={{ flex: '1 1 180px' }}>
-              Proceed to Payment <ArrowRight size={18} />
+              Proceed to Payment <ArrowRight size={16} />
             </button>
           </div>
         </form>

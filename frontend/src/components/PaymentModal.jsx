@@ -22,27 +22,27 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
             justifyContent: 'space-between',
             alignItems: 'center',
             borderBottom: '1px solid var(--border-color)',
-            paddingBottom: '14px',
+            paddingBottom: '12px',
             marginBottom: '16px'
           }}
         >
           <div>
-            <h3 id="payment-modal-title" style={{ fontSize: '1.25rem', color: '#fff' }}>Payment Gateway</h3>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-              Secure Payment • Amount: <span style={{ color: 'var(--accent-cyan)', fontWeight: 700 }}>₹{bookingData.totalFare}</span>
+            <h3 id="payment-modal-title" style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 800 }}>Payment Gateway</h3>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+              Secure Payment • Amount: <span style={{ color: '#34d399', fontWeight: 800 }}>₹{bookingData.totalFare}</span>
             </p>
           </div>
           <button onClick={onClose} className="btn btn-sm btn-secondary" disabled={processing} aria-label="Close modal">
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
         {/* Payment Method Tabs */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px', marginBottom: '16px' }}>
           {[
-            { id: 'UPI', label: 'UPI / QR', icon: <QrCode size={16} /> },
-            { id: 'Card', label: 'Card', icon: <CreditCard size={16} /> },
-            { id: 'NetBanking', label: 'Banking', icon: <Building2 size={16} /> }
+            { id: 'UPI', label: 'UPI / QR', icon: <QrCode size={15} /> },
+            { id: 'Card', label: 'Card', icon: <CreditCard size={15} /> },
+            { id: 'NetBanking', label: 'Banking', icon: <Building2 size={15} /> }
           ].map((tab) => (
             <button
               key={tab.id}
@@ -54,14 +54,14 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '6px',
-                padding: '10px 4px',
-                minHeight: '44px',
+                padding: '8px 4px',
+                minHeight: '40px',
                 borderRadius: 'var(--radius-sm)',
-                background: paymentMethod === tab.id ? 'rgba(37, 99, 235, 0.25)' : 'rgba(255, 255, 255, 0.04)',
-                border: paymentMethod === tab.id ? '1.5px solid var(--accent-cyan)' : '1px solid var(--border-color)',
+                background: paymentMethod === tab.id ? 'rgba(37, 99, 235, 0.25)' : '#0f172a',
+                border: paymentMethod === tab.id ? '1.5px solid #3b82f6' : '1px solid var(--border-color)',
                 color: paymentMethod === tab.id ? '#fff' : 'var(--text-secondary)',
                 fontWeight: 600,
-                fontSize: '0.82rem',
+                fontSize: '0.8rem',
                 cursor: 'pointer',
                 touchAction: 'manipulation'
               }}
@@ -74,24 +74,24 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
         {/* Form Body */}
         <form onSubmit={handlePay}>
           {paymentMethod === 'UPI' && (
-            <div style={{ textAlign: 'center', padding: '12px 0' }}>
+            <div style={{ textAlign: 'center', padding: '8px 0' }}>
               <div
                 style={{
-                  width: '140px',
-                  height: '140px',
+                  width: '130px',
+                  height: '130px',
                   margin: '0 auto 12px auto',
-                  background: '#fff',
-                  padding: '10px',
-                  borderRadius: '12px',
+                  background: '#ffffff',
+                  padding: '8px',
+                  borderRadius: 'var(--radius-sm)',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  border: '2px solid var(--accent-cyan)'
+                  border: '2px solid #2563eb'
                 }}
               >
                 {/* Simulated QR Code SVG */}
-                <svg viewBox="0 0 100 100" width="80" height="80">
+                <svg viewBox="0 0 100 100" width="75" height="75">
                   <rect x="0" y="0" width="30" height="30" fill="#0f172a" />
                   <rect x="5" y="5" width="20" height="20" fill="#fff" />
                   <rect x="10" y="10" width="10" height="10" fill="#0f172a" />
@@ -103,7 +103,7 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
                   <rect x="10" y="80" width="10" height="10" fill="#0f172a" />
                   <rect x="35" y="35" width="30" height="30" fill="#2563eb" />
                 </svg>
-                <span style={{ fontSize: '0.62rem', color: '#0f172a', fontWeight: 800, marginTop: '4px' }}>SCAN & PAY</span>
+                <span style={{ fontSize: '0.6rem', color: '#0f172a', fontWeight: 800, marginTop: '2px' }}>SCAN & PAY</span>
               </div>
               <div className="form-group" style={{ textAlign: 'left' }}>
                 <label className="form-label">Or enter UPI VPA ID</label>
@@ -163,28 +163,29 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
               alignItems: 'center',
               gap: '8px',
               color: 'var(--text-muted)',
-              fontSize: '0.78rem',
+              fontSize: '0.75rem',
               margin: '12px 0',
               padding: '8px 10px',
-              background: 'rgba(255,255,255,0.02)',
-              borderRadius: '6px'
+              background: '#0f172a',
+              borderRadius: 'var(--radius-xs)',
+              border: '1px solid var(--border-subtle)'
             }}
           >
-            <ShieldCheck size={16} className="text-emerald-400" />
+            <ShieldCheck size={15} style={{ color: '#34d399' }} />
             256-Bit SSL Encrypted & PCI-DSS Compliant Transaction
           </div>
 
           <button
             type="submit"
             disabled={processing}
-            className="btn btn-primary"
-            style={{ width: '100%', padding: '12px', fontSize: '0.95rem' }}
+            className="btn btn-emerald"
+            style={{ width: '100%', minHeight: '44px', fontSize: '0.9rem' }}
           >
             {processing ? (
               <span>Processing Payment...</span>
             ) : (
               <>
-                <CheckCircle size={18} /> Pay ₹{bookingData.totalFare} & Issue Ticket
+                <CheckCircle size={16} /> Pay ₹{bookingData.totalFare} & Issue Ticket
               </>
             )}
           </button>

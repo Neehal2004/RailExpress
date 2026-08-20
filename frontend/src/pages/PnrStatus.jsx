@@ -35,79 +35,79 @@ export default function PnrStatus() {
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '30px auto', padding: '0 16px' }}>
+    <div style={{ maxWidth: '800px', margin: '24px auto', padding: '0 16px' }}>
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-        <h2 style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', color: '#fff' }}>Live PNR Status Lookup</h2>
-        <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-          Enter your 10-digit booking PNR number to check current reservation & coach status
+      <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+        <h2 style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.85rem)', color: '#fff', fontWeight: 800 }}>Live PNR Status Lookup</h2>
+        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
+          Enter your 10-digit PNR number to check current reservation status & coach seat allocation
         </p>
       </div>
 
       {/* PNR Search Card */}
-      <div className="glass-panel" style={{ padding: 'clamp(20px, 4vw, 32px)', marginBottom: '30px' }}>
+      <div className="rail-panel" style={{ padding: 'clamp(20px, 4vw, 28px)', marginBottom: '24px' }}>
         <form onSubmit={handleSearchPnr}>
           <div className="form-group">
-            <label className="form-label" style={{ fontSize: '0.95rem' }}>10-Digit PNR Number</label>
+            <label className="form-label" style={{ fontSize: '0.85rem' }}>10-Digit Booking PNR Number</label>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               <input
                 type="text"
                 required
-                maxLength={10}
+                maxLength={15}
                 placeholder="e.g. PNR-849201"
                 className="form-input"
-                style={{ flex: '1 1 200px', letterSpacing: '0.05em', fontWeight: 700, fontSize: '1.05rem' }}
+                style={{ flex: '1 1 200px', letterSpacing: '0.05em', fontWeight: 800, fontSize: '1rem', fontFamily: 'var(--font-mono)' }}
                 value={pnrInput}
                 onChange={(e) => setPnrInput(e.target.value)}
                 aria-label="10-Digit PNR Number"
               />
-              <button type="submit" disabled={loading} className="btn btn-primary" style={{ flex: '1 1 120px' }}>
-                {loading ? 'Searching...' : <><Search size={18} /> Check Status</>}
+              <button type="submit" disabled={loading} className="btn btn-primary" style={{ flex: '1 1 140px', minHeight: '44px' }}>
+                {loading ? 'Searching...' : <><Search size={16} /> Check Status</>}
               </button>
             </div>
           </div>
         </form>
 
-        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '8px' }}>
-          💡 Tip: You can find your PNR on your booking confirmation ticket or SMS notification.
+        <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)', marginTop: '6px' }}>
+          💡 Tip: Your PNR is located on your electronic ticket or booking confirmation email.
         </div>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="glass-panel" style={{ padding: '24px', textAlign: 'center', color: '#f87171' }}>
-          <AlertCircle size={36} style={{ margin: '0 auto 10px auto' }} />
-          <h3>PNR Not Found</h3>
-          <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px' }}>{error}</p>
+        <div className="rail-panel" style={{ padding: '24px', textAlign: 'center', color: '#f87171' }}>
+          <AlertCircle size={32} style={{ margin: '0 auto 10px auto' }} />
+          <h3 style={{ fontSize: '1.05rem' }}>PNR Record Not Found</h3>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>{error}</p>
         </div>
       )}
 
       {/* PNR Result Display */}
       {booking && (
-        <div className="glass-panel" style={{ padding: 'clamp(20px, 4vw, 28px)' }}>
+        <div className="rail-panel" style={{ padding: 'clamp(20px, 4vw, 28px)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
             <div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>PNR NUMBER</span>
-              <h3 style={{ fontSize: '1.4rem', color: 'var(--accent-cyan)' }}>{booking.pnr}</h3>
+              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>PNR NUMBER</span>
+              <h3 style={{ fontSize: '1.35rem', color: '#60a5fa', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>{booking.pnr}</h3>
             </div>
-            <span className={`badge ${booking.status === 'Cancelled' ? 'badge-cancelled' : 'badge-confirmed'}`} style={{ padding: '6px 14px', fontSize: '0.85rem' }}>
+            <span className={`badge ${booking.status === 'Cancelled' ? 'badge-cancelled' : 'badge-confirmed'}`} style={{ padding: '6px 14px', fontSize: '0.8rem' }}>
               <CheckCircle size={14} /> Status: {booking.status}
             </span>
           </div>
 
-          <div style={{ background: 'rgba(15, 23, 42, 0.6)', padding: '16px', borderRadius: 'var(--radius-sm)', marginBottom: '20px' }}>
-            <div style={{ fontWeight: 700, fontSize: '1.1rem', color: '#fff' }}>{booking.trainId?.trainName} (#{booking.trainId?.trainNumber})</div>
-            <div style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+          <div style={{ background: '#0f172a', padding: '14px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', marginBottom: '18px' }}>
+            <div style={{ fontWeight: 800, fontSize: '1.05rem', color: '#fff' }}>{booking.trainId?.trainName} (#{booking.trainId?.trainNumber})</div>
+            <div style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', marginTop: '2px' }}>
               {booking.trainId?.source} → {booking.trainId?.destination}
             </div>
-            <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '6px' }}>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
               Travel Date: <strong style={{ color: '#fff' }}>{booking.travelDate}</strong> • Class: <strong style={{ color: '#fff' }}>{booking.classType}</strong>
             </div>
           </div>
 
           {/* Passenger Seat List */}
           <div style={{ marginBottom: '20px' }}>
-            <h4 style={{ fontSize: '0.95rem', color: '#fff', marginBottom: '10px' }}>Passenger Coach & Berth Allocation</h4>
+            <h4 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Passenger Coach & Berth Allocation</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {booking.passengers?.map((p, index) => (
                 <div
@@ -117,19 +117,19 @@ export default function PnrStatus() {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     padding: '10px 14px',
-                    background: 'rgba(255,255,255,0.03)',
-                    borderRadius: '6px',
-                    border: '1px solid var(--border-color)'
+                    background: '#0f172a',
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid var(--border-subtle)'
                   }}
                 >
                   <div>
-                    <strong style={{ color: '#fff', fontSize: '0.9rem' }}>{p.name}</strong>
-                    <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginLeft: '8px' }}>
+                    <strong style={{ color: '#fff', fontSize: '0.875rem' }}>{p.name}</strong>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginLeft: '8px' }}>
                       ({p.age} yrs, {p.gender})
                     </span>
                   </div>
-                  <div style={{ textAlign: 'right', fontSize: '0.85rem' }}>
-                    <span style={{ color: '#34d399', fontWeight: 700 }}>Coach {p.coach || 'B2'}</span> • Seat {p.seatNumber || (index + 12)} ({p.berth})
+                  <div style={{ textAlign: 'right', fontSize: '0.825rem' }}>
+                    <span style={{ color: '#34d399', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>Seat {p.seatNumber}</span> ({p.berth})
                   </div>
                 </div>
               ))}
