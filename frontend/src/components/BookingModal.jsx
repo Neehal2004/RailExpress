@@ -62,15 +62,15 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderBottom: '1px solid var(--border-color)',
+            borderBottom: '2px solid var(--accent-brass)',
             paddingBottom: '12px',
             marginBottom: '16px'
           }}
         >
           <div>
-            <h3 id="booking-modal-title" style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 800 }}>Passenger Reservation Form</h3>
+            <h3 id="booking-modal-title" style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: 800 }}>Passenger Reservation Form</h3>
             <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              {train.trainName} (#{train.trainNumber}) • Class: <span style={{ color: '#60a5fa', fontWeight: 700 }}>{selectedClass.className}</span> • Date: {travelDate}
+              {train.trainName} (#{train.trainNumber}) • Class: <span style={{ color: 'var(--accent-red)', fontWeight: 700 }}>{selectedClass.className}</span> • Date: {travelDate}
             </p>
           </div>
           <button onClick={onClose} className="btn btn-sm btn-secondary" aria-label="Close modal">
@@ -79,7 +79,7 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
         </div>
 
         {error && (
-          <div role="alert" style={{ background: 'var(--status-cancelled-bg)', color: '#f87171', border: '1px solid var(--status-cancelled-border)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '16px', fontSize: '0.825rem' }}>
+          <div role="alert" style={{ background: 'var(--status-cancelled-bg)', color: 'var(--accent-red)', border: '1px solid var(--status-cancelled-border)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '16px', fontSize: '0.825rem' }}>
             {error}
           </div>
         )}
@@ -89,15 +89,15 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
             <div
               key={index}
               style={{
-                background: '#0f172a',
-                border: '1px solid var(--border-subtle)',
+                background: '#FFFFFF',
+                border: '1px solid var(--border-color)',
                 borderRadius: 'var(--radius-sm)',
                 padding: '14px',
                 marginBottom: '12px'
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-                <span style={{ fontSize: '0.825rem', fontWeight: 700, color: '#60a5fa', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <span style={{ fontSize: '0.825rem', fontWeight: 800, color: 'var(--accent-brass)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Passenger #{index + 1}
                 </span>
                 {passengers.length > 1 && (
@@ -105,7 +105,7 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
                     type="button"
                     onClick={() => removePassenger(index)}
                     aria-label={`Remove passenger ${index + 1}`}
-                    style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', padding: '2px' }}
+                    style={{ background: 'none', border: 'none', color: 'var(--accent-red)', cursor: 'pointer', padding: '2px' }}
                   >
                     <Trash2 size={15} />
                   </button>
@@ -184,10 +184,10 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
           {/* Pricing Breakdown */}
           <div
             style={{
-              background: '#0f172a',
+              background: '#FFFFFF',
               padding: '12px 16px',
               borderRadius: 'var(--radius-sm)',
-              border: '1px solid var(--border-subtle)',
+              border: '1px solid var(--border-color)',
               marginBottom: '16px',
               display: 'flex',
               justifyContent: 'space-between',
@@ -200,11 +200,11 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 ₹{selectedClass.fare} × {passengers.length} Passenger(s)
               </div>
-              <div style={{ fontSize: '0.725rem', color: '#34d399', fontWeight: 600 }}>Includes GST & IRCTC reservation fees</div>
+              <div style={{ fontSize: '0.725rem', color: '#137333', fontWeight: 700 }}>Includes GST & IRCTC reservation fees</div>
             </div>
             <div style={{ textAlign: 'right' }}>
               <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Total Amount</span>
-              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#34d399' }}>
+              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#137333', fontFamily: 'var(--font-mono)' }}>
                 ₹{selectedClass.fare * passengers.length}
               </div>
             </div>

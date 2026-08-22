@@ -63,12 +63,12 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
     <div style={{ maxWidth: '1200px', margin: '20px auto', padding: '0 16px' }}>
       {/* Search Header Banner */}
       <div style={{ marginBottom: '20px' }}>
-        <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.75rem)', color: '#fff', fontWeight: 800 }}>Train Search & Seat Availability</h2>
+        <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.75rem)', color: 'var(--text-primary)', fontWeight: 800 }}>Train Search & Seat Availability</h2>
         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Query live schedules across 30 Superfast & Vande Bharat express trains</p>
       </div>
 
       {/* Filter / Search Form Panel */}
-      <div className="rail-panel" style={{ padding: 'clamp(16px, 3vw, 24px)', marginBottom: '24px' }}>
+      <div className="rail-panel" style={{ padding: 'clamp(16px, 3vw, 24px)', marginBottom: '24px', background: '#EAE3D2', border: '1px solid var(--border-color)' }}>
         <form onSubmit={handleSearchSubmit}>
           <div
             style={{
@@ -79,7 +79,7 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
             }}
           >
             <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">From Station</label>
+              <label className="form-label" style={{ color: 'var(--text-primary)' }}>From Station</label>
               <input
                 type="text"
                 className="form-input"
@@ -105,7 +105,7 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
             </div>
 
             <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">To Station</label>
+              <label className="form-label" style={{ color: 'var(--text-primary)' }}>To Station</label>
               <input
                 type="text"
                 className="form-input"
@@ -118,7 +118,7 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
             </div>
 
             <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">Travel Date</label>
+              <label className="form-label" style={{ color: 'var(--text-primary)' }}>Travel Date</label>
               <input
                 type="date"
                 className="form-input"
@@ -148,12 +148,12 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
 
       {/* Results Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
-        <h3 style={{ fontSize: '1.1rem', color: '#fff', fontWeight: 700 }}>
-          Available Trains {trains.length > 0 && <span style={{ color: '#60a5fa', fontFamily: 'var(--font-mono)' }}>({trains.length})</span>}
+        <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontWeight: 800 }}>
+          Available Trains {trains.length > 0 && <span style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }}>({trains.length})</span>}
         </h3>
         {source && destination && (
           <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-            Showing trains from <strong style={{ color: '#fff' }}>{source}</strong> to <strong style={{ color: '#fff' }}>{destination}</strong>
+            Showing trains from <strong style={{ color: 'var(--text-primary)' }}>{source}</strong> to <strong style={{ color: 'var(--text-primary)' }}>{destination}</strong>
           </span>
         )}
       </div>
@@ -161,13 +161,13 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
       {/* Loading & Error States */}
       {loading && (
         <div style={{ textAlign: 'center', padding: '40px 16px', color: 'var(--text-muted)' }}>
-          <RefreshCw size={28} style={{ animation: 'spin 1.5s linear infinite', margin: '0 auto 10px auto', color: '#60a5fa' }} />
+          <RefreshCw size={28} style={{ animation: 'spin 1.5s linear infinite', margin: '0 auto 10px auto', color: 'var(--accent-red)' }} />
           <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Searching live train schedules...</div>
         </div>
       )}
 
       {error && (
-        <div className="rail-panel" style={{ padding: '24px', textAlign: 'center', color: '#f87171' }}>
+        <div className="rail-panel" style={{ padding: '24px', textAlign: 'center', color: 'var(--accent-red)', background: '#FCE8E6', border: '1px solid #FAD2CF' }}>
           <AlertCircle size={28} style={{ margin: '0 auto 10px auto' }} />
           <div>{error}</div>
         </div>
@@ -189,9 +189,9 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
       )}
 
       {!loading && !error && trains.length === 0 && (
-        <div className="rail-panel" style={{ padding: '40px 20px', textAlign: 'center' }}>
+        <div className="rail-panel" style={{ padding: '40px 20px', textAlign: 'center', background: '#FFFFFF' }}>
           <Train size={44} color="var(--text-muted)" style={{ margin: '0 auto 12px auto' }} />
-          <h3 style={{ fontSize: '1.1rem', color: '#fff' }}>No Direct Express Trains Found</h3>
+          <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontWeight: 800 }}>No Direct Express Trains Found</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '6px', maxWidth: '420px', margin: '6px auto 16px auto' }}>
             No direct trains matching your station query were found. Try selecting major junction stations or reset your search filters.
           </p>

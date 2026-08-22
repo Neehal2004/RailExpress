@@ -21,15 +21,15 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderBottom: '1px solid var(--border-color)',
+            borderBottom: '2px solid var(--accent-brass)',
             paddingBottom: '12px',
             marginBottom: '16px'
           }}
         >
           <div>
-            <h3 id="payment-modal-title" style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 800 }}>Payment Gateway</h3>
+            <h3 id="payment-modal-title" style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: 800 }}>Payment Gateway</h3>
             <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              Secure Payment • Amount: <span style={{ color: '#34d399', fontWeight: 800 }}>₹{bookingData.totalFare}</span>
+              Secure Payment • Amount: <span style={{ color: '#137333', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>₹{bookingData.totalFare}</span>
             </p>
           </div>
           <button onClick={onClose} className="btn btn-sm btn-secondary" disabled={processing} aria-label="Close modal">
@@ -57,10 +57,10 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
                 padding: '8px 4px',
                 minHeight: '40px',
                 borderRadius: 'var(--radius-sm)',
-                background: paymentMethod === tab.id ? 'rgba(37, 99, 235, 0.25)' : '#0f172a',
-                border: paymentMethod === tab.id ? '1.5px solid #3b82f6' : '1px solid var(--border-color)',
-                color: paymentMethod === tab.id ? '#fff' : 'var(--text-secondary)',
-                fontWeight: 600,
+                background: paymentMethod === tab.id ? 'var(--accent-red)' : '#FFFFFF',
+                border: paymentMethod === tab.id ? '1.5px solid var(--accent-red)' : '1px solid var(--border-color)',
+                color: paymentMethod === tab.id ? '#ffffff' : 'var(--text-primary)',
+                fontWeight: 700,
                 fontSize: '0.8rem',
                 cursor: 'pointer',
                 touchAction: 'manipulation'
@@ -87,23 +87,23 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  border: '2px solid #2563eb'
+                  border: '2px solid var(--bg-charcoal)'
                 }}
               >
                 {/* Simulated QR Code SVG */}
                 <svg viewBox="0 0 100 100" width="75" height="75">
-                  <rect x="0" y="0" width="30" height="30" fill="#0f172a" />
+                  <rect x="0" y="0" width="30" height="30" fill="#202321" />
                   <rect x="5" y="5" width="20" height="20" fill="#fff" />
-                  <rect x="10" y="10" width="10" height="10" fill="#0f172a" />
-                  <rect x="70" y="0" width="30" height="30" fill="#0f172a" />
+                  <rect x="10" y="10" width="10" height="10" fill="#202321" />
+                  <rect x="70" y="0" width="30" height="30" fill="#202321" />
                   <rect x="75" y="5" width="20" height="20" fill="#fff" />
-                  <rect x="80" y="10" width="10" height="10" fill="#0f172a" />
-                  <rect x="0" y="70" width="30" height="30" fill="#0f172a" />
+                  <rect x="80" y="10" width="10" height="10" fill="#202321" />
+                  <rect x="0" y="70" width="30" height="30" fill="#202321" />
                   <rect x="5" y="75" width="20" height="20" fill="#fff" />
-                  <rect x="10" y="80" width="10" height="10" fill="#0f172a" />
-                  <rect x="35" y="35" width="30" height="30" fill="#2563eb" />
+                  <rect x="10" y="80" width="10" height="10" fill="#202321" />
+                  <rect x="35" y="35" width="30" height="30" fill="#B52A2A" />
                 </svg>
-                <span style={{ fontSize: '0.6rem', color: '#0f172a', fontWeight: 800, marginTop: '2px' }}>SCAN & PAY</span>
+                <span style={{ fontSize: '0.6rem', color: '#202321', fontWeight: 800, marginTop: '2px' }}>SCAN & PAY</span>
               </div>
               <div className="form-group" style={{ textAlign: 'left' }}>
                 <label className="form-label">Or enter UPI VPA ID</label>
@@ -166,12 +166,12 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
               fontSize: '0.75rem',
               margin: '12px 0',
               padding: '8px 10px',
-              background: '#0f172a',
+              background: '#FFFFFF',
               borderRadius: 'var(--radius-xs)',
-              border: '1px solid var(--border-subtle)'
+              border: '1px solid var(--border-color)'
             }}
           >
-            <ShieldCheck size={15} style={{ color: '#34d399' }} />
+            <ShieldCheck size={15} style={{ color: '#137333' }} />
             256-Bit SSL Encrypted & PCI-DSS Compliant Transaction
           </div>
 

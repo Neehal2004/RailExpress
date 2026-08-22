@@ -59,8 +59,8 @@ export default function Home({ onSearch, onSelectBookingClass }) {
         style={{
           position: 'relative',
           padding: 'clamp(28px, 4vw, 52px) 16px',
-          background: 'linear-gradient(180deg, #152238 0%, #0b1120 100%)',
-          borderBottom: '1px solid var(--border-subtle)'
+          background: 'var(--bg-charcoal)',
+          borderBottom: '3px double var(--accent-brass)'
         }}
       >
         <div style={{ maxWidth: '1020px', margin: '0 auto' }}>
@@ -73,9 +73,9 @@ export default function Home({ onSearch, onSelectBookingClass }) {
                 gap: '6px',
                 padding: '4px 12px',
                 borderRadius: 'var(--radius-xs)',
-                background: 'rgba(37, 99, 235, 0.15)',
-                border: '1px solid rgba(59, 130, 246, 0.35)',
-                color: '#60a5fa',
+                background: 'rgba(176, 138, 69, 0.15)',
+                border: '1px solid var(--accent-brass)',
+                color: 'var(--accent-brass)',
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 textTransform: 'uppercase',
@@ -98,13 +98,13 @@ export default function Home({ onSearch, onSelectBookingClass }) {
               Indian Railways Ticket Reservation Portal
             </h1>
 
-            <p style={{ fontSize: 'clamp(0.875rem, 1.8vw, 1.05rem)', color: 'var(--text-secondary)', maxWidth: '680px', margin: '0 auto' }}>
+            <p style={{ fontSize: 'clamp(0.875rem, 1.8vw, 1.05rem)', color: '#D6CDBC', maxWidth: '680px', margin: '0 auto' }}>
               Check real-time train timetables across 30 Superfast & Vande Bharat express routes, inspect seat class quotas, and issue confirmed E-Tickets.
             </p>
           </div>
 
           {/* Station Search Widget Panel */}
-          <div className="rail-panel" style={{ padding: 'clamp(18px, 3.5vw, 28px)', background: '#151e33', boxShadow: 'var(--shadow-lg)' }}>
+          <div className="rail-panel" style={{ padding: 'clamp(18px, 3.5vw, 28px)', background: '#F5F0E6', border: '2px solid var(--accent-brass)', boxShadow: 'var(--shadow-lg)' }}>
             <form onSubmit={handleSearchSubmit}>
               <div
                 style={{
@@ -116,8 +116,8 @@ export default function Home({ onSearch, onSelectBookingClass }) {
               >
                 {/* Source Station */}
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">
-                    <MapPin size={13} style={{ color: '#60a5fa', marginRight: '4px' }} /> From Station
+                  <label className="form-label" style={{ color: 'var(--text-primary)' }}>
+                    <MapPin size={13} style={{ color: 'var(--accent-red)', marginRight: '4px' }} /> From Station
                   </label>
                   <input
                     type="text"
@@ -146,8 +146,8 @@ export default function Home({ onSearch, onSelectBookingClass }) {
 
                 {/* Destination Station */}
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">
-                    <MapPin size={13} style={{ color: '#34d399', marginRight: '4px' }} /> To Station
+                  <label className="form-label" style={{ color: 'var(--text-primary)' }}>
+                    <MapPin size={13} style={{ color: '#137333', marginRight: '4px' }} /> To Station
                   </label>
                   <input
                     type="text"
@@ -163,8 +163,8 @@ export default function Home({ onSearch, onSelectBookingClass }) {
                 {/* Travel Date */}
                 <div className="form-group" style={{ marginBottom: 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <label className="form-label">
-                      <Calendar size={13} style={{ color: '#fbbf24', marginRight: '4px' }} /> Travel Date
+                    <label className="form-label" style={{ color: 'var(--text-primary)' }}>
+                      <Calendar size={13} style={{ color: 'var(--accent-brass)', marginRight: '4px' }} /> Travel Date
                     </label>
                   </div>
                   <input
@@ -204,7 +204,7 @@ export default function Home({ onSearch, onSelectBookingClass }) {
             </form>
 
             {/* Date Quick Shortcuts & Popular Routes */}
-            <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+            <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
               {/* Quick Routes */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '0.725rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Popular Routes:</span>
@@ -252,23 +252,23 @@ export default function Home({ onSearch, onSelectBookingClass }) {
       </section>
 
       {/* Network Metrics Ticker */}
-      <section style={{ background: '#0f172a', borderBottom: '1px solid var(--border-subtle)', padding: '12px 16px' }}>
+      <section style={{ background: '#EAE3D2', borderBottom: '1px solid var(--border-color)', padding: '12px 16px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap', gap: '16px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Train size={16} style={{ color: '#60a5fa' }} />
-            <span><strong style={{ color: '#fff' }}>30</strong> Superfast & Vande Bharat Expresses</span>
+            <Train size={16} style={{ color: 'var(--accent-red)' }} />
+            <span><strong style={{ color: 'var(--text-primary)' }}>30</strong> Superfast & Vande Bharat Expresses</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <MapPin size={16} style={{ color: '#34d399' }} />
-            <span><strong style={{ color: '#fff' }}>12+</strong> Major Junction Stations</span>
+            <MapPin size={16} style={{ color: '#137333' }} />
+            <span><strong style={{ color: 'var(--text-primary)' }}>12+</strong> Major Junction Stations</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Zap size={16} style={{ color: '#fbbf24' }} />
-            <span><strong style={{ color: '#fff' }}>Atomic</strong> Concurrency-Safe Seat Allocation</span>
+            <Zap size={16} style={{ color: 'var(--accent-brass)' }} />
+            <span><strong style={{ color: 'var(--text-primary)' }}>Atomic</strong> Concurrency-Safe Seat Allocation</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <ShieldCheck size={16} style={{ color: '#a78bfa' }} />
-            <span><strong style={{ color: '#fff' }}>QR Code</strong> TC E-Ticket Verification</span>
+            <ShieldCheck size={16} style={{ color: 'var(--accent-red)' }} />
+            <span><strong style={{ color: 'var(--text-primary)' }}>QR Code</strong> TC E-Ticket Verification</span>
           </div>
         </div>
       </section>
@@ -278,30 +278,30 @@ export default function Home({ onSearch, onSelectBookingClass }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
           {[
             {
-              icon: <Train size={24} style={{ color: '#60a5fa' }} />,
+              icon: <Train size={24} style={{ color: 'var(--accent-red)' }} />,
               title: 'Live Seat Availability',
               desc: 'Real-time quota seat tracking across 1A, 2A, 3A, Sleeper (SL), and Chair Car (CC) coaches.'
             },
             {
-              icon: <Zap size={24} style={{ color: '#34d399' }} />,
+              icon: <Zap size={24} style={{ color: '#137333' }} />,
               title: 'Instant Ticket Booking',
               desc: 'Atomic concurrency-safe booking engine with passenger berth preferences.'
             },
             {
-              icon: <RefreshCw size={24} style={{ color: '#fbbf24' }} />,
+              icon: <RefreshCw size={24} style={{ color: 'var(--accent-brass)' }} />,
               title: '1-Click Cancellation',
               desc: 'Cancel tickets instantly before departure with auto seat restocking and refund status.'
             },
             {
-              icon: <ShieldCheck size={24} style={{ color: '#a78bfa' }} />,
+              icon: <ShieldCheck size={24} style={{ color: 'var(--accent-red)' }} />,
               title: 'Printable E-Tickets',
               desc: 'Official print-ready E-Tickets complete with QR code TC verification.'
             }
           ].map((item, index) => (
-            <div key={index} className="rail-card" style={{ padding: '20px' }}>
+            <div key={index} className="rail-card" style={{ padding: '20px', background: '#ffffff' }}>
               <div style={{ marginBottom: '12px' }}>{item.icon}</div>
-              <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '4px', fontWeight: 700 }}>{item.title}</h3>
-              <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)' }}>{item.desc}</p>
+              <h3 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', marginBottom: '4px', fontWeight: 700 }}>{item.title}</h3>
+              <p style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>{item.desc}</p>
             </div>
           ))}
         </div>
@@ -312,7 +312,7 @@ export default function Home({ onSearch, onSelectBookingClass }) {
         <section style={{ maxWidth: '1200px', margin: '0 auto 40px auto', padding: '0 16px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
             <div>
-              <h2 style={{ fontSize: 'clamp(1.2rem, 3vw, 1.5rem)', color: '#fff', fontWeight: 800 }}>Featured Superfast & Vande Bharat Express Trains</h2>
+              <h2 style={{ fontSize: 'clamp(1.2rem, 3vw, 1.5rem)', color: 'var(--text-primary)', fontWeight: 800 }}>Featured Superfast & Vande Bharat Express Trains</h2>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Top daily express connections across major junction routes</p>
             </div>
             <button onClick={() => onSearch({ source: '', destination: '', date })} className="btn btn-secondary btn-sm">
