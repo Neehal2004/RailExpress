@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Search, MapPin, Calendar, Train, ShieldCheck, Zap, RefreshCw, Award, ArrowRight } from 'lucide-react';
+import { Search, MapPin, Calendar, Train, ShieldCheck, Zap, RefreshCw, Award, ArrowRight, Activity, Clock } from 'lucide-react';
 import TrainCard from '../components/TrainCard';
 import API_BASE from '../config/api';
 
 export default function Home({ onSearch, onSelectBookingClass }) {
+  const getTomorrowDate = () => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split('T')[0];
+  };
+
+  const getDayAfterTomorrowDate = () => {
+    const d = new Date();
+    d.setDate(d.getDate() + 2);
+    return d.toISOString().split('T')[0];
+  };
+
   const [source, setSource] = useState('New Delhi (NDLS)');
   const [destination, setDestination] = useState('Mumbai Central (MMCT)');
-  const [date, setDate] = useState(new Date(Date.now() + 86400000).toISOString().split('T')[0]);
+  const [date, setDate] = useState(getTomorrowDate());
   const [stations, setStations] = useState([]);
   const [featuredTrains, setFeaturedTrains] = useState([]);
 
@@ -36,18 +48,23 @@ export default function Home({ onSearch, onSelectBookingClass }) {
     setDestination(dest);
   };
 
+  const setQuickDate = (targetDate) => {
+    setDate(targetDate);
+  };
+
   return (
     <div>
       {/* Hero Section */}
       <section
         style={{
           position: 'relative',
-          padding: 'clamp(28px, 4vw, 48px) 16px',
+          padding: 'clamp(28px, 4vw, 52px) 16px',
           background: 'linear-gradient(180deg, #152238 0%, #0b1120 100%)',
           borderBottom: '1px solid var(--border-subtle)'
         }}
       >
-        <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1020px', margin: '0 auto' }}>
+          {/* Header Typography */}
           <div style={{ textAlign: 'center', marginBottom: '24px' }}>
             <div
               style={{
@@ -57,12 +74,12 @@ export default function Home({ onSearch, onSelectBookingClass }) {
                 padding: '4px 12px',
                 borderRadius: 'var(--radius-xs)',
                 background: 'rgba(37, 99, 235, 0.15)',
-                border: '1px solid rgba(59, 130, 246, 0.3)',
+                border: '1px solid rgba(59, 130, 246, 0.35)',
                 color: '#60a5fa',
                 fontSize: '0.75rem',
                 fontWeight: 700,
                 textTransform: 'uppercase',
-                letterSpacing: '0.05em',
+                letterSpacing: '0.06em',
                 marginBottom: '12px'
               }}
             >
@@ -71,7 +88,7 @@ export default function Home({ onSearch, onSelectBookingClass }) {
 
             <h1
               style={{
-                fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
+                fontSize: 'clamp(1.85rem, 4.5vw, 2.85rem)',
                 fontWeight: 800,
                 lineHeight: 1.2,
                 marginBottom: '10px',
@@ -81,25 +98,27 @@ export default function Home({ onSearch, onSelectBookingClass }) {
               Indian Railways Ticket Reservation Portal
             </h1>
 
-            <p style={{ fontSize: 'clamp(0.875rem, 1.8vw, 1.05rem)', color: 'var(--text-secondary)', maxWidth: '640px', margin: '0 auto' }}>
-              Check live train schedules across 30 Superfast & Vande Bharat express routes, view seat availability, and book confirmed E-Tickets instantly.
+            <p style={{ fontSize: 'clamp(0.875rem, 1.8vw, 1.05rem)', color: 'var(--text-secondary)', maxWidth: '680px', margin: '0 auto' }}>
+              Check real-time train timetables across 30 Superfast & Vande Bharat express routes, inspect seat class quotas, and issue confirmed E-Tickets.
             </p>
           </div>
 
           {/* Station Search Widget Panel */}
-          <div className="rail-panel" style={{ padding: 'clamp(16px, 3vw, 24px)', background: '#151e33' }}>
+          <div className="rail-panel" style={{ padding: 'clamp(18px, 3.5vw, 28px)', background: '#151e33', boxShadow: 'var(--shadow-lg)' }}>
             <form onSubmit={handleSearchSubmit}>
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))',
                   gap: '12px',
                   alignItems: 'end'
                 }}
               >
                 {/* Source Station */}
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">From Station</label>
+                  <label className="form-label">
+                    <MapPin size={13} style={{ color: '#60a5fa', marginRight: '4px' }} /> From Station
+                  </label>
                   <input
                     type="text"
                     className="form-input"
@@ -127,7 +146,9 @@ export default function Home({ onSearch, onSelectBookingClass }) {
 
                 {/* Destination Station */}
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">To Station</label>
+                  <label className="form-label">
+                    <MapPin size={13} style={{ color: '#34d399', marginRight: '4px' }} /> To Station
+                  </label>
                   <input
                     type="text"
                     className="form-input"
@@ -141,7 +162,11 @@ export default function Home({ onSearch, onSelectBookingClass }) {
 
                 {/* Travel Date */}
                 <div className="form-group" style={{ marginBottom: 0 }}>
-                  <label className="form-label">Travel Date</label>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <label className="form-label">
+                      <Calendar size={13} style={{ color: '#fbbf24', marginRight: '4px' }} /> Travel Date
+                    </label>
+                  </div>
                   <input
                     type="date"
                     className="form-input"
@@ -163,49 +188,99 @@ export default function Home({ onSearch, onSelectBookingClass }) {
                   <option value="Bhopal (BPL)" />
                   <option value="Varanasi (BSB)" />
                   <option value="Ahmedabad (ADI)" />
+                  <option value="Jaipur (JP)" />
+                  <option value="Lucknow Charbagh (LKO)" />
+                  <option value="Pune Junction (PUNE)" />
+                  <option value="Patna Junction (PNBE)" />
                 </datalist>
 
-                {/* Submit Search */}
+                {/* Submit Search Button */}
                 <div>
-                  <button type="submit" className="btn btn-primary" style={{ width: '100%', minHeight: '44px' }}>
+                  <button type="submit" className="btn btn-primary" style={{ width: '100%', minHeight: '44px', fontWeight: 700 }}>
                     <Search size={16} /> Search Trains
                   </button>
                 </div>
               </div>
             </form>
 
-            {/* Popular Route Shortcuts */}
-            <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '0.725rem', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Quick Routes:</span>
-              {[
-                { label: 'Delhi ⇄ Mumbai', src: 'New Delhi (NDLS)', dest: 'Mumbai Central (MMCT)' },
-                { label: 'Delhi ⇄ Howrah', src: 'New Delhi (NDLS)', dest: 'Howrah (HWH)' },
-                { label: 'Bengaluru ⇄ Chennai', src: 'KSR Bengaluru (SBC)', dest: 'Chennai Central (MAS)' },
-                { label: 'Delhi ⇄ Varanasi', src: 'New Delhi (NDLS)', dest: 'Varanasi (BSB)' }
-              ].map((route, idx) => (
+            {/* Date Quick Shortcuts & Popular Routes */}
+            <div style={{ marginTop: '16px', paddingTop: '14px', borderTop: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+              {/* Quick Routes */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.725rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Popular Routes:</span>
+                {[
+                  { label: 'Delhi ⇄ Mumbai', src: 'New Delhi (NDLS)', dest: 'Mumbai Central (MMCT)' },
+                  { label: 'Delhi ⇄ Howrah', src: 'New Delhi (NDLS)', dest: 'Howrah (HWH)' },
+                  { label: 'Bengaluru ⇄ Chennai', src: 'KSR Bengaluru (SBC)', dest: 'Chennai Central (MAS)' },
+                  { label: 'Delhi ⇄ Varanasi', src: 'New Delhi (NDLS)', dest: 'Varanasi (BSB)' },
+                  { label: 'Mumbai ⇄ Ahmedabad', src: 'Mumbai Central (MMCT)', dest: 'Ahmedabad (ADI)' }
+                ].map((route, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => selectQuickRoute(route.src, route.dest)}
+                    className="btn btn-secondary btn-sm"
+                    style={{ fontSize: '0.75rem', padding: '4px 10px', minHeight: '30px' }}
+                  >
+                    {route.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Quick Date Selector */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <button
-                  key={idx}
                   type="button"
-                  onClick={() => selectQuickRoute(route.src, route.dest)}
-                  className="btn btn-secondary btn-sm"
-                  style={{ fontSize: '0.75rem', padding: '4px 10px', minHeight: '30px' }}
+                  onClick={() => setQuickDate(getTomorrowDate())}
+                  className={`btn btn-sm ${date === getTomorrowDate() ? 'btn-primary' : 'btn-secondary'}`}
+                  style={{ fontSize: '0.725rem', padding: '4px 8px', minHeight: '28px' }}
                 >
-                  {route.label}
+                  Tomorrow
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => setQuickDate(getDayAfterTomorrowDate())}
+                  className={`btn btn-sm ${date === getDayAfterTomorrowDate() ? 'btn-primary' : 'btn-secondary'}`}
+                  style={{ fontSize: '0.725rem', padding: '4px 8px', minHeight: '28px' }}
+                >
+                  Day After
+                </button>
+              </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Network Metrics Ticker */}
+      <section style={{ background: '#0f172a', borderBottom: '1px solid var(--border-subtle)', padding: '12px 16px' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap', gap: '16px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Train size={16} style={{ color: '#60a5fa' }} />
+            <span><strong style={{ color: '#fff' }}>30</strong> Superfast & Vande Bharat Expresses</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <MapPin size={16} style={{ color: '#34d399' }} />
+            <span><strong style={{ color: '#fff' }}>12+</strong> Major Junction Stations</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Zap size={16} style={{ color: '#fbbf24' }} />
+            <span><strong style={{ color: '#fff' }}>Atomic</strong> Concurrency-Safe Seat Allocation</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <ShieldCheck size={16} style={{ color: '#a78bfa' }} />
+            <span><strong style={{ color: '#fff' }}>QR Code</strong> TC E-Ticket Verification</span>
           </div>
         </div>
       </section>
 
       {/* Feature Highlights Section */}
       <section style={{ maxWidth: '1200px', margin: '32px auto', padding: '0 16px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
           {[
             {
               icon: <Train size={24} style={{ color: '#60a5fa' }} />,
               title: 'Live Seat Availability',
-              desc: 'Real-time quota seat tracking across 1A, 2A, 3A, Sleeper (SL), and Chair Car (CC).'
+              desc: 'Real-time quota seat tracking across 1A, 2A, 3A, Sleeper (SL), and Chair Car (CC) coaches.'
             },
             {
               icon: <Zap size={24} style={{ color: '#34d399' }} />,
@@ -223,10 +298,10 @@ export default function Home({ onSearch, onSelectBookingClass }) {
               desc: 'Official print-ready E-Tickets complete with QR code TC verification.'
             }
           ].map((item, index) => (
-            <div key={index} className="rail-card" style={{ padding: '18px' }}>
-              <div style={{ marginBottom: '10px' }}>{item.icon}</div>
-              <h3 style={{ fontSize: '1rem', color: '#fff', marginBottom: '4px', fontWeight: 700 }}>{item.title}</h3>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{item.desc}</p>
+            <div key={index} className="rail-card" style={{ padding: '20px' }}>
+              <div style={{ marginBottom: '12px' }}>{item.icon}</div>
+              <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '4px', fontWeight: 700 }}>{item.title}</h3>
+              <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)' }}>{item.desc}</p>
             </div>
           ))}
         </div>
