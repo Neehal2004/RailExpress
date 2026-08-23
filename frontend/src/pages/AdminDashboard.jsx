@@ -228,49 +228,49 @@ export default function AdminDashboard({ onNotification }) {
       {/* Analytics Executive Cards Grid */}
       {stats && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '24px' }}>
-          <div className="rail-card" style={{ padding: '16px', background: '#FFFFFF' }}>
+          <div className="rail-card" style={{ padding: '16px', background: '#FFFFFF', borderTop: '3px solid #137333' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>TOTAL REVENUE</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>TOTAL REVENUE</span>
               <DollarSign size={18} style={{ color: '#137333' }} />
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#137333', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#137333', marginTop: '4px', fontFamily: 'var(--font-mono)' }} className="tabular-nums">
               ₹{stats.totalRevenue?.toLocaleString()}
             </div>
             <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-              Refunded: ₹{stats.totalRefunds?.toLocaleString()}
+              Refunded: <span className="tabular-nums">₹{stats.totalRefunds?.toLocaleString()}</span>
             </div>
           </div>
 
-          <div className="rail-card" style={{ padding: '16px', background: '#FFFFFF' }}>
+          <div className="rail-card" style={{ padding: '16px', background: '#FFFFFF', borderTop: '3px solid var(--accent-red)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>TOTAL BOOKINGS</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>TOTAL BOOKINGS</span>
               <Ticket size={18} style={{ color: 'var(--accent-red)' }} />
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-red)', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-red)', marginTop: '4px', fontFamily: 'var(--font-mono)' }} className="tabular-nums">
               {stats.totalBookings}
             </div>
             <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-              Confirmed: {stats.activeBookings} • Cancelled: {stats.cancelledBookings}
+              Confirmed: <span className="tabular-nums">{stats.activeBookings}</span> • Cancelled: <span className="tabular-nums">{stats.cancelledBookings}</span>
             </div>
           </div>
 
-          <div className="rail-card" style={{ padding: '16px', background: '#FFFFFF' }}>
+          <div className="rail-card" style={{ padding: '16px', background: '#FFFFFF', borderTop: '3px solid var(--accent-brass)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>TRAIN SCHEDULES</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>TRAIN SCHEDULES</span>
               <Train size={18} style={{ color: 'var(--accent-brass)' }} />
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-brass)', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--accent-brass)', marginTop: '4px', fontFamily: 'var(--font-mono)' }} className="tabular-nums">
               {stats.totalTrains}
             </div>
             <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>Active Superfast Routes</div>
           </div>
 
-          <div className="rail-card" style={{ padding: '16px', background: '#FFFFFF' }}>
+          <div className="rail-card" style={{ padding: '16px', background: '#FFFFFF', borderTop: '3px solid var(--bg-charcoal)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--text-muted)' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase' }}>REGISTERED USERS</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' }}>REGISTERED USERS</span>
               <Users size={18} style={{ color: 'var(--text-primary)' }} />
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px', fontFamily: 'var(--font-mono)' }}>
+            <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)', marginTop: '4px', fontFamily: 'var(--font-mono)' }} className="tabular-nums">
               {stats.totalUsers}
             </div>
             <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>Active Passenger Accounts</div>
@@ -347,14 +347,14 @@ export default function AdminDashboard({ onNotification }) {
               <tbody>
                 {trains.map((t) => (
                   <tr key={t._id}>
-                    <td style={{ fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }}>#{t.trainNumber}</td>
+                    <td style={{ fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }} className="tabular-nums">#{t.trainNumber}</td>
                     <td style={{ fontWeight: 700 }}>{t.trainName}</td>
-                    <td>{t.source} → {t.destination} ({t.distanceKm} km)</td>
-                    <td>{t.departureTime} - {t.arrivalTime} ({t.duration})</td>
+                    <td>{t.source} → {t.destination} (<span className="tabular-nums">{t.distanceKm}</span> km)</td>
+                    <td><span className="tabular-nums">{t.departureTime}</span> - <span className="tabular-nums">{t.arrivalTime}</span> (<span className="tabular-nums">{t.duration}</span>)</td>
                     <td>
                       {t.classes.map((c) => (
                         <span key={c.className} style={{ background: '#F8F5EE', border: '1px solid var(--border-color)', padding: '2px 6px', borderRadius: 'var(--radius-xs)', marginRight: '4px', fontSize: '0.725rem', display: 'inline-block', marginBottom: '2px' }}>
-                          {c.className}: ₹{c.fare} (AVL: {c.availableSeats})
+                          {c.className}: ₹<span className="tabular-nums">{c.fare}</span> (AVL: <span className="tabular-nums">{c.availableSeats}</span>)
                         </span>
                       ))}
                     </td>
@@ -379,7 +379,7 @@ export default function AdminDashboard({ onNotification }) {
       {/* Tab 2: Bookings Report */}
       {activeTab === 'reports' && (
         <div>
-          <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '14px', fontWeight: 800 }}>Master Booking Records ({allBookings.length})</h3>
+          <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '14px', fontWeight: 800 }}>Master Booking Records (<span className="tabular-nums">{allBookings.length}</span>)</h3>
           <div className="rail-panel table-responsive">
             <table className="rail-table" style={{ minWidth: '700px' }}>
               <thead>
@@ -396,12 +396,12 @@ export default function AdminDashboard({ onNotification }) {
               <tbody>
                 {allBookings.map((b) => (
                   <tr key={b._id}>
-                    <td style={{ fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }}>{b.pnr}</td>
+                    <td style={{ fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }} className="tabular-nums">{b.pnr}</td>
                     <td>{b.userId?.name} ({b.userId?.email})</td>
                     <td>{b.trainId?.trainName} (#{b.trainId?.trainNumber})</td>
-                    <td>{b.travelDate}</td>
-                    <td>{b.classType} ({b.passengers?.length} pax)</td>
-                    <td style={{ fontWeight: 700, color: '#137333', fontFamily: 'var(--font-mono)' }}>₹{b.totalFare}</td>
+                    <td className="tabular-nums">{b.travelDate}</td>
+                    <td>{b.classType} (<span className="tabular-nums">{b.passengers?.length}</span> pax)</td>
+                    <td style={{ fontWeight: 700, color: '#137333', fontFamily: 'var(--font-mono)' }} className="tabular-nums">₹{b.totalFare}</td>
                     <td>
                       <span className={`badge ${b.status === 'Cancelled' ? 'badge-cancelled' : 'badge-confirmed'}`}>
                         {b.status}
@@ -418,7 +418,7 @@ export default function AdminDashboard({ onNotification }) {
       {/* Tab 3: Payment Ledger */}
       {activeTab === 'payments' && (
         <div>
-          <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '14px', fontWeight: 800 }}>Payment Gateway Ledger ({allPayments.length})</h3>
+          <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', marginBottom: '14px', fontWeight: 800 }}>Payment Gateway Ledger (<span className="tabular-nums">{allPayments.length}</span>)</h3>
           <div className="rail-panel table-responsive">
             <table className="rail-table" style={{ minWidth: '700px' }}>
               <thead>
@@ -434,16 +434,16 @@ export default function AdminDashboard({ onNotification }) {
               <tbody>
                 {allPayments.map((p) => (
                   <tr key={p._id}>
-                    <td style={{ fontWeight: 700, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }}>{p.transactionId}</td>
+                    <td style={{ fontWeight: 700, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }} className="tabular-nums">{p.transactionId}</td>
                     <td>{p.userId?.name}</td>
-                    <td style={{ fontWeight: 700, color: '#137333', fontFamily: 'var(--font-mono)' }}>₹{p.amount}</td>
+                    <td style={{ fontWeight: 700, color: '#137333', fontFamily: 'var(--font-mono)' }} className="tabular-nums">₹{p.amount}</td>
                     <td>{p.paymentMethod}</td>
                     <td>
                       <span className={`badge ${p.status === 'Refunded' ? 'badge-warning' : 'badge-confirmed'}`}>
                         {p.status}
                       </span>
                     </td>
-                    <td style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>
+                    <td style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }} className="tabular-nums">
                       {new Date(p.paymentDate).toLocaleString()}
                     </td>
                   </tr>

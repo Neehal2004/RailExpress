@@ -54,17 +54,19 @@ export default function TicketView({ booking, payment, onClose }) {
             }}
           >
             <div>
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)' }}>
-                Rail<span style={{ color: 'var(--accent-red)' }}>Express</span> Boarding Pass
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '0.02em' }}>
+                Rail<span style={{ color: 'var(--accent-red)' }}>Express</span> Official Boarding Pass
               </h2>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 600 }}>Indian Railways Official Reservation Slip</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Ministry of Railways • Reservation Service
+              </span>
             </div>
 
             <div style={{ textAlign: 'right' }}>
               <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>
                 PNR Number
               </div>
-              <div style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }} className="tabular-nums">
                 {booking.pnr}
               </div>
               <span className={`badge ${isCancelled ? 'badge-cancelled' : 'badge-confirmed'}`} style={{ marginTop: '4px' }}>
@@ -89,7 +91,7 @@ export default function TicketView({ booking, payment, onClose }) {
                   {train.trainName || 'Express Train'} (#{train.trainNumber || 'N/A'})
                 </span>
                 <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '2px' }}>
-                  Class: <strong style={{ color: 'var(--text-primary)' }}>{booking.classType}</strong> • Travel Date: <strong style={{ color: 'var(--text-primary)' }}>{booking.travelDate}</strong>
+                  Class Quota: <strong style={{ color: 'var(--text-primary)' }}>{booking.classType}</strong> • Travel Date: <strong style={{ color: 'var(--text-primary)' }}>{booking.travelDate}</strong>
                 </div>
               </div>
             </div>
@@ -104,12 +106,18 @@ export default function TicketView({ booking, payment, onClose }) {
               }}
             >
               <div>
-                <div style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)' }}>{train.departureTime || '06:00 AM'}</div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{train.source}</div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }} className="tabular-nums">
+                  {train.departureTime || '06:00 AM'}
+                </div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 700 }}>
+                  {train.source}
+                </div>
               </div>
 
               <div style={{ textAlign: 'center' }}>
-                <span style={{ fontSize: '0.7rem', color: 'var(--accent-red)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>{train.duration || 'Direct'}</span>
+                <span style={{ fontSize: '0.7rem', color: 'var(--accent-red)', fontFamily: 'var(--font-mono)', fontWeight: 800 }} className="tabular-nums">
+                  {train.duration || 'Direct'}
+                </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-muted)' }}>
                   <div style={{ width: '30px', height: '1px', background: 'var(--border-color)' }} />
                   <ArrowRight size={14} color="var(--accent-red)" />
@@ -118,8 +126,12 @@ export default function TicketView({ booking, payment, onClose }) {
               </div>
 
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)' }}>{train.arrivalTime || '02:00 PM'}</div>
-                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{train.destination}</div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }} className="tabular-nums">
+                  {train.arrivalTime || '02:00 PM'}
+                </div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 700 }}>
+                  {train.destination}
+                </div>
               </div>
             </div>
           </div>
@@ -127,27 +139,27 @@ export default function TicketView({ booking, payment, onClose }) {
           {/* Passenger Table */}
           <div style={{ marginBottom: '18px' }}>
             <h4 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>
-              Passenger Details ({booking.passengers?.length || 0})
+              Passenger Coach & Berth Allocation ({booking.passengers?.length || 0})
             </h4>
             <div className="table-responsive">
               <table className="rail-table">
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Name</th>
+                    <th>Passenger Name</th>
                     <th>Age / Gender</th>
                     <th>Coach & Seat</th>
-                    <th>Berth</th>
+                    <th>Berth Allocation</th>
                   </tr>
                 </thead>
                 <tbody>
                   {booking.passengers?.map((p, idx) => (
                     <tr key={idx}>
-                      <td>{idx + 1}</td>
+                      <td className="tabular-nums">{idx + 1}</td>
                       <td style={{ fontWeight: 700 }}>{p.name}</td>
-                      <td>{p.age} Yrs / {p.gender}</td>
-                      <td style={{ color: 'var(--accent-red)', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>{p.seatNumber}</td>
-                      <td>{p.berth}</td>
+                      <td className="tabular-nums">{p.age} Yrs / {p.gender}</td>
+                      <td style={{ color: 'var(--accent-red)', fontWeight: 800, fontFamily: 'var(--font-mono)' }} className="tabular-nums">{p.seatNumber}</td>
+                      <td style={{ fontWeight: 600 }}>{p.berth}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -168,9 +180,9 @@ export default function TicketView({ booking, payment, onClose }) {
             }}
           >
             <div>
-              <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Payment Summary</div>
+              <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>Payment Summary</div>
               <div style={{ fontSize: '0.875rem', color: 'var(--text-primary)', fontWeight: 600 }}>
-                Total Fare: <span style={{ color: '#137333', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>₹{booking.totalFare}</span>
+                Total Fare: <span style={{ color: '#137333', fontWeight: 800, fontFamily: 'var(--font-mono)' }} className="tabular-nums">₹{booking.totalFare}</span>
               </div>
               <div style={{ fontSize: '0.725rem', color: '#137333', fontWeight: 700 }}>
                 Status: {payment?.status || (isCancelled ? 'Refunded' : 'Success')} ({payment?.paymentMethod || 'UPI'})
@@ -192,8 +204,8 @@ export default function TicketView({ booking, payment, onClose }) {
               >
                 <QrCode size={38} color="#202321" />
               </div>
-              <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', maxWidth: '100px', fontWeight: 600 }}>
-                Scan to verify with Railway TC App
+              <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', maxWidth: '110px', fontWeight: 600 }}>
+                Scan to verify with Railway TC Verification App
               </div>
             </div>
           </div>

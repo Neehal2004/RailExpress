@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { X, LogIn, UserPlus, Shield, UserCheck, AlertCircle } from 'lucide-react';
+import { X, LogIn, UserPlus, Shield, UserCheck, AlertCircle, Train } from 'lucide-react';
 import API_BASE from '../config/api';
 
 export default function AuthModal({ initialMode = 'login', onClose, onSuccessNotification }) {
@@ -28,10 +28,10 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data.message || 'Authentication failed');
+        throw new Error(data.message || (res.status === 502 || res.status === 504 ? 'Backend server is unreachable. Please ensure the API is running on port 5000.' : 'Authentication failed'));
       }
 
       login(data);
@@ -43,7 +43,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
       }
       onClose();
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'An unexpected error occurred during authentication');
     } finally {
       setLoading(false);
     }
@@ -61,10 +61,10 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: demoEmail, password: demoPassword })
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data.message || 'Demo login failed');
+        throw new Error(data.message || (res.status === 502 || res.status === 504 ? 'Backend server is unreachable. Please ensure the API is running on port 5000.' : 'Demo login failed'));
       }
 
       login(data);
@@ -76,7 +76,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
       }
       onClose();
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'An unexpected error occurred during demo login');
     } finally {
       setLoading(false);
     }
@@ -91,16 +91,19 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            borderBottom: '1px solid var(--border-color)',
-            paddingBottom: '14px',
+            borderBottom: '2px solid var(--accent-brass)',
+            paddingBottom: '12px',
             marginBottom: '16px'
           }}
         >
-          <h3 id="auth-modal-title" style={{ fontSize: '1.25rem', color: '#fff' }}>
-            {mode === 'login' ? 'User Login' : 'Create Account'}
-          </h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Train size={18} style={{ color: 'var(--accent-brass)' }} />
+            <h3 id="auth-modal-title" style={{ fontSize: '1.15rem', color: 'var(--text-primary)', fontWeight: 800 }}>
+              {mode === 'login' ? 'Passenger & Staff Sign In' : 'New Passenger Registration'}
+            </h3>
+          </div>
           <button onClick={onClose} className="btn btn-sm btn-secondary" aria-label="Close modal">
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
@@ -112,19 +115,20 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
             aria-pressed={mode === 'login'}
             style={{
               flex: 1,
-              padding: '10px',
-              minHeight: '44px',
+              padding: '8px 12px',
+              minHeight: '40px',
               borderRadius: 'var(--radius-sm)',
-              background: mode === 'login' ? 'var(--accent-gradient)' : 'rgba(255,255,255,0.05)',
-              color: '#fff',
-              fontWeight: 600,
-              fontSize: '0.88rem',
-              border: 'none',
+              background: mode === 'login' ? 'var(--accent-red)' : '#FFFFFF',
+              border: mode === 'login' ? '1px solid var(--accent-red)' : '1px solid var(--border-color)',
+              color: mode === 'login' ? '#ffffff' : 'var(--text-primary)',
+              fontWeight: 700,
+              fontSize: '0.85rem',
               cursor: 'pointer',
               touchAction: 'manipulation'
             }}
           >
-            Login
+            <LogIn size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+            Sign In
           </button>
           <button
             type="button"
@@ -132,41 +136,42 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
             aria-pressed={mode === 'register'}
             style={{
               flex: 1,
-              padding: '10px',
-              minHeight: '44px',
+              padding: '8px 12px',
+              minHeight: '40px',
               borderRadius: 'var(--radius-sm)',
-              background: mode === 'register' ? 'var(--accent-gradient)' : 'rgba(255,255,255,0.05)',
-              color: '#fff',
-              fontWeight: 600,
-              fontSize: '0.88rem',
-              border: 'none',
+              background: mode === 'register' ? 'var(--accent-red)' : '#FFFFFF',
+              border: mode === 'register' ? '1px solid var(--accent-red)' : '1px solid var(--border-color)',
+              color: mode === 'register' ? '#ffffff' : 'var(--text-primary)',
+              fontWeight: 700,
+              fontSize: '0.85rem',
               cursor: 'pointer',
               touchAction: 'manipulation'
             }}
           >
+            <UserPlus size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
             Register
           </button>
         </div>
 
         {/* Quick Demo Credentials Buttons */}
-        <div style={{ marginBottom: '16px', padding: '10px', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', border: '1px dashed rgba(59, 130, 246, 0.3)' }}>
-          <span style={{ fontSize: '0.72rem', color: 'var(--accent-cyan)', fontWeight: 700, textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
-            ⚡ Quick Passenger Demo Login:
+        <div style={{ marginBottom: '16px', padding: '10px 12px', background: '#FFFFFF', borderRadius: 'var(--radius-sm)', border: '1px solid var(--accent-brass)' }}>
+          <span style={{ fontSize: '0.7rem', color: 'var(--accent-brass)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '8px' }}>
+            ⚡ Fast Demo Authentication:
           </span>
-          <div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '6px' }}>
             <button
               type="button"
               onClick={() => handleDemoLogin('john@example.com', 'User@123')}
               className="btn btn-sm btn-secondary"
-              style={{ fontSize: '0.75rem', width: '100%' }}
+              style={{ fontSize: '0.75rem', width: '100%', minHeight: '34px' }}
             >
-              <UserCheck size={14} className="text-cyan-400" /> Passenger Demo (John Doe)
+              <UserCheck size={13} style={{ color: 'var(--accent-brass)' }} /> Passenger Account (John Doe)
             </button>
           </div>
         </div>
 
         {error && (
-          <div role="alert" style={{ background: 'var(--danger-bg)', color: '#f87171', padding: '10px 14px', borderRadius: '8px', marginBottom: '16px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div role="alert" style={{ background: 'var(--status-cancelled-bg)', color: 'var(--accent-red)', border: '1px solid var(--status-cancelled-border)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '16px', fontSize: '0.825rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <AlertCircle size={16} /> {error}
           </div>
         )}
@@ -176,7 +181,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
           {mode === 'register' && (
             <>
               <div className="form-group">
-                <label className="form-label">Full Name *</label>
+                <label className="form-label">Full Passenger Name *</label>
                 <input
                   type="text"
                   required
@@ -229,9 +234,9 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
             type="submit"
             disabled={loading}
             className="btn btn-primary"
-            style={{ width: '100%', padding: '12px', marginTop: '8px' }}
+            style={{ width: '100%', minHeight: '44px', marginTop: '8px' }}
           >
-            {loading ? 'Processing...' : mode === 'login' ? 'Sign In' : 'Create Account'}
+            {loading ? 'Processing...' : mode === 'login' ? 'Sign In to RailExpress' : 'Complete Registration'}
           </button>
         </form>
       </div>

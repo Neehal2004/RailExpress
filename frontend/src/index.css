@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap');
 
 :root {
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Railway Heritage Palette: INK + PAPER + SIGNAL + BRASS */
   --bg-main: #F5F0E6;          /* Warm Ivory Canvas */
@@ -28,6 +28,7 @@
   --accent-red-hover: #8F1D1D;
   --accent-brass: #B08A45;     /* Brass Gold Secondary Accent */
   --accent-brass-hover: #967335;
+  --accent-brass-light: #D4AF67;
 
   --status-confirmed-bg: #E6F4EA;
   --status-confirmed-text: #137333;
@@ -82,6 +83,12 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
 }
 
+/* Tabular Numerals for Rock-Solid Financial & Timetable Precision */
+.tabular-nums, .font-mono, [data-tabular] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
 /* Accessibility Focus Ring */
 :focus-visible {
   outline: 2px solid var(--accent-red);
@@ -100,7 +107,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 
 .glass-card:hover, .rail-card:hover {
@@ -122,11 +129,15 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
   text-decoration: none;
   touch-action: manipulation;
   user-select: none;
   white-space: nowrap;
+}
+
+.btn:active {
+  transform: translateY(1px);
 }
 
 .btn-primary {
@@ -241,6 +252,7 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .badge-confirmed {
@@ -277,6 +289,7 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   transition: all 0.15s ease;
   user-select: none;
+  position: relative;
 }
 
 .quota-box:hover {
@@ -338,6 +351,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-secondary);
   white-space: nowrap;
   font-weight: 600;
+  font-family: var(--font-mono);
 }
 
 /* Modal Overlay & Content */
@@ -429,10 +443,18 @@ h1, h2, h3, h4, h5, h6 {
   padding: 12px 14px;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
 .rail-table tr:hover td {
   background: #FDFBF7;
+}
+
+/* Perforated Boarding Pass Separation */
+.perforated-rule {
+  border-bottom: 2px dashed var(--border-color);
+  position: relative;
+  margin: 16px 0;
 }
 
 /* Print Styles for E-Ticket */
@@ -487,3 +509,4 @@ h1, h2, h3, h4, h5, h6 {
     padding: 16px;
   }
 }
+

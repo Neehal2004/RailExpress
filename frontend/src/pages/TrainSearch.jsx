@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Train, Filter, ArrowLeftRight, AlertCircle, RefreshCw } from 'lucide-react';
+import { Search, Train, Filter, ArrowLeftRight, AlertCircle, RefreshCw, MapPin, Calendar } from 'lucide-react';
 import TrainCard from '../components/TrainCard';
 import API_BASE from '../config/api';
 
@@ -63,8 +63,12 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
     <div style={{ maxWidth: '1200px', margin: '20px auto', padding: '0 16px' }}>
       {/* Search Header Banner */}
       <div style={{ marginBottom: '20px' }}>
-        <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.75rem)', color: 'var(--text-primary)', fontWeight: 800 }}>Train Search & Seat Availability</h2>
-        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Query live schedules across 30 Superfast & Vande Bharat express trains</p>
+        <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.75rem)', color: 'var(--text-primary)', fontWeight: 800, letterSpacing: '-0.01em' }}>
+          Train Search & Quota Availability
+        </h2>
+        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+          Query live schedules across 30 Superfast & Vande Bharat express trains
+        </p>
       </div>
 
       {/* Filter / Search Form Panel */}
@@ -79,7 +83,9 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
             }}
           >
             <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label" style={{ color: 'var(--text-primary)' }}>From Station</label>
+              <label className="form-label" style={{ color: 'var(--text-primary)' }}>
+                <MapPin size={13} style={{ color: 'var(--accent-red)', marginRight: '4px' }} /> From Station
+              </label>
               <input
                 type="text"
                 className="form-input"
@@ -105,7 +111,9 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
             </div>
 
             <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label" style={{ color: 'var(--text-primary)' }}>To Station</label>
+              <label className="form-label" style={{ color: 'var(--text-primary)' }}>
+                <MapPin size={13} style={{ color: '#137333', marginRight: '4px' }} /> To Station
+              </label>
               <input
                 type="text"
                 className="form-input"
@@ -118,7 +126,9 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
             </div>
 
             <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label" style={{ color: 'var(--text-primary)' }}>Travel Date</label>
+              <label className="form-label" style={{ color: 'var(--text-primary)' }}>
+                <Calendar size={13} style={{ color: 'var(--accent-brass)', marginRight: '4px' }} /> Travel Date
+              </label>
               <input
                 type="date"
                 className="form-input"
@@ -149,7 +159,7 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
       {/* Results Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
         <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontWeight: 800 }}>
-          Available Trains {trains.length > 0 && <span style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }}>({trains.length})</span>}
+          Available Trains {trains.length > 0 && <span style={{ color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }} className="tabular-nums">({trains.length})</span>}
         </h3>
         {source && destination && (
           <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
@@ -189,7 +199,7 @@ export default function TrainSearch({ initialSearch, onSelectBookingClass }) {
       )}
 
       {!loading && !error && trains.length === 0 && (
-        <div className="rail-panel" style={{ padding: '40px 20px', textAlign: 'center', background: '#FFFFFF' }}>
+        <div className="rail-panel" style={{ padding: '40px 20px', textAlign: 'center', background: '#FFFFFF', border: '1px solid var(--border-color)' }}>
           <Train size={44} color="var(--text-muted)" style={{ margin: '0 auto 12px auto' }} />
           <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontWeight: 800 }}>No Direct Express Trains Found</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '6px', maxWidth: '420px', margin: '6px auto 16px auto' }}>

@@ -92,14 +92,15 @@ export default function Home({ onSearch, onSelectBookingClass }) {
                 fontWeight: 800,
                 lineHeight: 1.2,
                 marginBottom: '10px',
-                color: '#ffffff'
+                color: '#ffffff',
+                letterSpacing: '-0.015em'
               }}
             >
-              Indian Railways Ticket Reservation Portal
+              Indian Railways Reservation Portal
             </h1>
 
             <p style={{ fontSize: 'clamp(0.875rem, 1.8vw, 1.05rem)', color: '#D6CDBC', maxWidth: '680px', margin: '0 auto' }}>
-              Check real-time train timetables across 30 Superfast & Vande Bharat express routes, inspect seat class quotas, and issue confirmed E-Tickets.
+              Check live train timetables across 30 Superfast & Vande Bharat express routes, inspect seat quotas, and issue official E-Tickets.
             </p>
           </div>
 
@@ -256,11 +257,11 @@ export default function Home({ onSearch, onSelectBookingClass }) {
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-around', alignItems: 'center', flexWrap: 'wrap', gap: '16px', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Train size={16} style={{ color: 'var(--accent-red)' }} />
-            <span><strong style={{ color: 'var(--text-primary)' }}>30</strong> Superfast & Vande Bharat Expresses</span>
+            <span><strong style={{ color: 'var(--text-primary)' }} className="tabular-nums">30</strong> Superfast & Vande Bharat Expresses</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <MapPin size={16} style={{ color: '#137333' }} />
-            <span><strong style={{ color: 'var(--text-primary)' }}>12+</strong> Major Junction Stations</span>
+            <span><strong style={{ color: 'var(--text-primary)' }} className="tabular-nums">12+</strong> Major Junction Stations</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Zap size={16} style={{ color: 'var(--accent-brass)' }} />
@@ -298,7 +299,7 @@ export default function Home({ onSearch, onSelectBookingClass }) {
               desc: 'Official print-ready E-Tickets complete with QR code TC verification.'
             }
           ].map((item, index) => (
-            <div key={index} className="rail-card" style={{ padding: '20px', background: '#ffffff' }}>
+            <div key={index} className="rail-card" style={{ padding: '20px', background: '#ffffff', borderTop: '3px solid var(--accent-brass)' }}>
               <div style={{ marginBottom: '12px' }}>{item.icon}</div>
               <h3 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', marginBottom: '4px', fontWeight: 700 }}>{item.title}</h3>
               <p style={{ fontSize: '0.825rem', color: 'var(--text-muted)' }}>{item.desc}</p>

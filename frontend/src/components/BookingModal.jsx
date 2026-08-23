@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Plus, Trash2, User, Calendar, CreditCard, ArrowRight } from 'lucide-react';
+import { X, Plus, Trash2, User, Calendar, CreditCard, ArrowRight, Train } from 'lucide-react';
 
 export default function BookingModal({ train, selectedClass, travelDate, onClose, onProceedToPayment }) {
   const [passengers, setPassengers] = useState([
@@ -67,11 +67,16 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
             marginBottom: '16px'
           }}
         >
-          <div>
-            <h3 id="booking-modal-title" style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: 800 }}>Passenger Reservation Form</h3>
-            <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              {train.trainName} (#{train.trainNumber}) • Class: <span style={{ color: 'var(--accent-red)', fontWeight: 700 }}>{selectedClass.className}</span> • Date: {travelDate}
-            </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Train size={20} style={{ color: 'var(--accent-brass)' }} />
+            <div>
+              <h3 id="booking-modal-title" style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: 800 }}>
+                Passenger Reservation Roster
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                {train.trainName} (#{train.trainNumber}) • Class: <span style={{ color: 'var(--accent-red)', fontWeight: 700 }}>{selectedClass.className}</span> • Date: <strong style={{ color: 'var(--text-primary)' }}>{travelDate}</strong>
+              </p>
+            </div>
           </div>
           <button onClick={onClose} className="btn btn-sm btn-secondary" aria-label="Close modal">
             <X size={16} />
@@ -133,7 +138,7 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
                     min="1"
                     max="120"
                     placeholder="e.g. 28"
-                    className="form-input"
+                    className="form-input tabular-nums"
                     value={p.age}
                     onChange={(e) => handlePassengerChange(index, 'age', e.target.value)}
                   />
@@ -200,11 +205,13 @@ export default function BookingModal({ train, selectedClass, travelDate, onClose
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 ₹{selectedClass.fare} × {passengers.length} Passenger(s)
               </div>
-              <div style={{ fontSize: '0.725rem', color: '#137333', fontWeight: 700 }}>Includes GST & IRCTC reservation fees</div>
+              <div style={{ fontSize: '0.725rem', color: '#137333', fontWeight: 700 }}>
+                Includes GST & Railway reservation charges
+              </div>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Total Amount</span>
-              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#137333', fontFamily: 'var(--font-mono)' }}>
+              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Total Tariff</span>
+              <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#137333', fontFamily: 'var(--font-mono)' }} className="tabular-nums">
                 ₹{selectedClass.fare * passengers.length}
               </div>
             </div>

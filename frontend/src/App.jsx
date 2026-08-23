@@ -135,21 +135,20 @@ function MainApp() {
       {/* Footer */}
       <footer
         style={{
-          background: 'rgba(7, 13, 29, 0.95)',
-          borderTop: '1px solid var(--border-color)',
-          padding: '24px',
-          textAlign: 'center',
-          color: 'var(--text-muted)',
+          background: 'var(--bg-charcoal)',
+          borderTop: '2px solid var(--accent-brass)',
+          padding: '24px 20px',
+          color: 'var(--text-light)',
           fontSize: '0.85rem',
           marginTop: '40px'
         }}
       >
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <div>
-            <strong>RailExpress SRS Implementation</strong> • Railway Ticket Booking System (MERN Stack)
+            <strong style={{ color: 'var(--accent-brass)', letterSpacing: '0.04em' }}>RAILEXPRESS</strong> • Indian Railways Official Reservation Network
           </div>
-          <div>
-            Built with React, Express.js & MongoDB
+          <div style={{ color: '#D6CDBC', fontSize: '0.8rem' }}>
+            Production-Grade Full-Stack MERN Architecture
           </div>
         </div>
       </footer>

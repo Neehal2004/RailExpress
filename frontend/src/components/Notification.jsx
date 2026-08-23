@@ -7,25 +7,32 @@ export default function Notification({ notification, onClose }) {
   const { type = 'info', message } = notification;
 
   const icons = {
-    success: <CheckCircle2 size={20} className="text-emerald-400" />,
-    error: <AlertCircle size={20} className="text-rose-400" />,
-    info: <Info size={20} className="text-cyan-400" />
+    success: <CheckCircle2 size={20} style={{ color: '#137333', flexShrink: 0 }} />,
+    error: <AlertCircle size={20} style={{ color: 'var(--accent-red)', flexShrink: 0 }} />,
+    info: <Info size={20} style={{ color: 'var(--accent-brass)', flexShrink: 0 }} />
   };
 
   const bgStyles = {
-    success: 'rgba(16, 185, 129, 0.2)',
-    error: 'rgba(239, 68, 68, 0.2)',
-    info: 'rgba(6, 182, 212, 0.2)'
+    success: 'var(--status-confirmed-bg)',
+    error: 'var(--status-cancelled-bg)',
+    info: 'var(--status-rac-bg)'
   };
 
   const borderStyles = {
-    success: '1px solid rgba(16, 185, 129, 0.4)',
-    error: '1px solid rgba(239, 68, 68, 0.4)',
-    info: '1px solid rgba(6, 182, 212, 0.4)'
+    success: '1px solid var(--status-confirmed-border)',
+    error: '1px solid var(--status-cancelled-border)',
+    info: '1px solid var(--status-rac-border)'
+  };
+
+  const textStyles = {
+    success: 'var(--status-confirmed-text)',
+    error: 'var(--status-cancelled-text)',
+    info: 'var(--status-rac-text)'
   };
 
   return (
     <div
+      role="alert"
       style={{
         position: 'fixed',
         top: '24px',
@@ -34,23 +41,23 @@ export default function Notification({ notification, onClose }) {
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
-        padding: '14px 20px',
-        borderRadius: '12px',
+        padding: '12px 18px',
+        borderRadius: 'var(--radius-sm)',
         background: bgStyles[type] || bgStyles.info,
         border: borderStyles[type] || borderStyles.info,
-        backdropFilter: 'blur(10px)',
-        color: '#fff',
-        boxShadow: '0 10px 25px rgba(0,0,0,0.5)',
-        maxWidth: '420px',
-        animation: 'fadeIn 0.3s ease'
+        color: textStyles[type] || textStyles.info,
+        boxShadow: 'var(--shadow-md)',
+        maxWidth: '440px',
+        animation: 'fadeIn 0.15s ease'
       }}
     >
       {icons[type]}
-      <span style={{ fontSize: '0.9rem', fontWeight: 500, flex: 1 }}>{message}</span>
+      <span style={{ fontSize: '0.875rem', fontWeight: 700, flex: 1 }}>{message}</span>
       {onClose && (
         <button
           onClick={onClose}
-          style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '2px' }}
+          aria-label="Dismiss notification"
+          style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: '2px', display: 'flex', alignItems: 'center' }}
         >
           <X size={16} />
         </button>

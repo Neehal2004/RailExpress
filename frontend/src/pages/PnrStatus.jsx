@@ -38,14 +38,16 @@ export default function PnrStatus() {
     <div style={{ maxWidth: '800px', margin: '24px auto', padding: '0 16px' }}>
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-        <h2 style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.85rem)', color: 'var(--text-primary)', fontWeight: 800 }}>Live PNR Status Lookup</h2>
+        <h2 style={{ fontSize: 'clamp(1.35rem, 3.5vw, 1.85rem)', color: 'var(--text-primary)', fontWeight: 800, letterSpacing: '-0.015em' }}>
+          Live PNR Status Lookup
+        </h2>
         <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
           Enter your 10-digit PNR number to check current reservation status & coach seat allocation
         </p>
       </div>
 
       {/* PNR Search Card */}
-      <div className="rail-panel" style={{ padding: 'clamp(20px, 4vw, 28px)', marginBottom: '24px', background: '#FFFFFF' }}>
+      <div className="rail-panel" style={{ padding: 'clamp(20px, 4vw, 28px)', marginBottom: '24px', background: '#FFFFFF', border: '1px solid var(--border-color)' }}>
         <form onSubmit={handleSearchPnr}>
           <div className="form-group">
             <label className="form-label" style={{ fontSize: '0.85rem' }}>10-Digit Booking PNR Number</label>
@@ -55,7 +57,7 @@ export default function PnrStatus() {
                 required
                 maxLength={15}
                 placeholder="e.g. PNR-849201"
-                className="form-input"
+                className="form-input tabular-nums"
                 style={{ flex: '1 1 200px', letterSpacing: '0.05em', fontWeight: 800, fontSize: '1rem', fontFamily: 'var(--font-mono)' }}
                 value={pnrInput}
                 onChange={(e) => setPnrInput(e.target.value)}
@@ -69,7 +71,7 @@ export default function PnrStatus() {
         </form>
 
         <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)', marginTop: '6px' }}>
-          💡 Tip: Your PNR is located on your electronic ticket or booking confirmation email.
+          💡 Tip: Your PNR is located on your electronic ticket or booking confirmation slip.
         </div>
       </div>
 
@@ -84,11 +86,11 @@ export default function PnrStatus() {
 
       {/* PNR Result Display */}
       {booking && (
-        <div className="rail-panel" style={{ padding: 'clamp(20px, 4vw, 28px)', background: '#FFFFFF' }}>
+        <div className="rail-panel" style={{ padding: 'clamp(20px, 4vw, 28px)', background: '#FFFFFF', border: '1px solid var(--border-color)', borderLeft: '4px solid var(--accent-brass)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
             <div>
-              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>PNR NUMBER</span>
-              <h3 style={{ fontSize: '1.35rem', color: 'var(--accent-red)', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>{booking.pnr}</h3>
+              <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>PNR NUMBER</span>
+              <h3 style={{ fontSize: '1.35rem', color: 'var(--accent-red)', fontFamily: 'var(--font-mono)', fontWeight: 800 }} className="tabular-nums">{booking.pnr}</h3>
             </div>
             <span className={`badge ${booking.status === 'Cancelled' ? 'badge-cancelled' : 'badge-confirmed'}`} style={{ padding: '6px 14px', fontSize: '0.8rem' }}>
               <CheckCircle size={14} /> Status: {booking.status}
@@ -101,7 +103,7 @@ export default function PnrStatus() {
               {booking.trainId?.source} → {booking.trainId?.destination}
             </div>
             <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-              Travel Date: <strong style={{ color: 'var(--text-primary)' }}>{booking.travelDate}</strong> • Class: <strong style={{ color: 'var(--text-primary)' }}>{booking.classType}</strong>
+              Travel Date: <strong style={{ color: 'var(--text-primary)' }} className="tabular-nums">{booking.travelDate}</strong> • Class: <strong style={{ color: 'var(--text-primary)' }}>{booking.classType}</strong>
             </div>
           </div>
 
@@ -125,11 +127,11 @@ export default function PnrStatus() {
                   <div>
                     <strong style={{ color: 'var(--text-primary)', fontSize: '0.875rem' }}>{p.name}</strong>
                     <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginLeft: '8px' }}>
-                      ({p.age} yrs, {p.gender})
+                      (<span className="tabular-nums">{p.age}</span> yrs, {p.gender})
                     </span>
                   </div>
                   <div style={{ textAlign: 'right', fontSize: '0.825rem' }}>
-                    <span style={{ color: '#137333', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>Seat {p.seatNumber}</span> ({p.berth})
+                    <span style={{ color: '#137333', fontWeight: 800, fontFamily: 'var(--font-mono)' }} className="tabular-nums">Seat {p.seatNumber}</span> ({p.berth})
                   </div>
                 </div>
               ))}

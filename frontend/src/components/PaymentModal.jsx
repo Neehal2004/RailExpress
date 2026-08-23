@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { X, QrCode, CreditCard, Building2, ShieldCheck, CheckCircle } from 'lucide-react';
+import { X, QrCode, CreditCard, Building2, ShieldCheck, CheckCircle, Lock } from 'lucide-react';
 
 export default function PaymentModal({ bookingData, onClose, onConfirmPayment, processing }) {
   const [paymentMethod, setPaymentMethod] = useState('UPI');
-  const [upiId, setUpiId] = useState('user@upi');
+  const [upiId, setUpiId] = useState('passenger@upi');
   const [cardNumber, setCardNumber] = useState('4532 •••• •••• 8892');
   const [bank, setBank] = useState('State Bank of India');
 
@@ -26,11 +26,16 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
             marginBottom: '16px'
           }}
         >
-          <div>
-            <h3 id="payment-modal-title" style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: 800 }}>Payment Gateway</h3>
-            <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
-              Secure Payment • Amount: <span style={{ color: '#137333', fontWeight: 800, fontFamily: 'var(--font-mono)' }}>₹{bookingData.totalFare}</span>
-            </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Lock size={18} style={{ color: 'var(--accent-brass)' }} />
+            <div>
+              <h3 id="payment-modal-title" style={{ fontSize: '1.2rem', color: 'var(--text-primary)', fontWeight: 800 }}>
+                Payment Gateway Clearance
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                Amount Payable: <span style={{ color: '#137333', fontWeight: 800, fontFamily: 'var(--font-mono)' }} className="tabular-nums">₹{bookingData.totalFare}</span>
+              </p>
+            </div>
           </div>
           <button onClick={onClose} className="btn btn-sm btn-secondary" disabled={processing} aria-label="Close modal">
             <X size={16} />
@@ -42,7 +47,7 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
           {[
             { id: 'UPI', label: 'UPI / QR', icon: <QrCode size={15} /> },
             { id: 'Card', label: 'Card', icon: <CreditCard size={15} /> },
-            { id: 'NetBanking', label: 'Banking', icon: <Building2 size={15} /> }
+            { id: 'NetBanking', label: 'Net Banking', icon: <Building2 size={15} /> }
           ].map((tab) => (
             <button
               key={tab.id}
@@ -121,11 +126,11 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
           {paymentMethod === 'Card' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div className="form-group">
-                <label className="form-label">Card Number</label>
+                <label className="form-label">Debit / Credit Card Number</label>
                 <input
                   type="text"
                   required
-                  className="form-input"
+                  className="form-input tabular-nums"
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
                 />
@@ -133,11 +138,11 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                 <div className="form-group">
                   <label className="form-label">Expiry Date</label>
-                  <input type="text" required defaultValue="08/28" className="form-input" />
+                  <input type="text" required defaultValue="08/28" className="form-input tabular-nums" />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">CVV</label>
-                  <input type="password" required defaultValue="882" maxLength={4} className="form-input" />
+                  <label className="form-label">CVV / CVC</label>
+                  <input type="password" required defaultValue="882" maxLength={4} className="form-input tabular-nums" />
                 </div>
               </div>
             </div>
@@ -145,13 +150,14 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
 
           {paymentMethod === 'NetBanking' && (
             <div className="form-group">
-              <label className="form-label">Select Your Bank</label>
+              <label className="form-label">Select Authorised Bank</label>
               <select className="form-select" value={bank} onChange={(e) => setBank(e.target.value)}>
                 <option value="State Bank of India">State Bank of India (SBI)</option>
                 <option value="HDFC Bank">HDFC Bank</option>
                 <option value="ICICI Bank">ICICI Bank</option>
                 <option value="Axis Bank">Axis Bank</option>
                 <option value="Punjab National Bank">Punjab National Bank (PNB)</option>
+                <option value="Bank of Baroda">Bank of Baroda</option>
               </select>
             </div>
           )}
@@ -172,7 +178,7 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
             }}
           >
             <ShieldCheck size={15} style={{ color: '#137333' }} />
-            256-Bit SSL Encrypted & PCI-DSS Compliant Transaction
+            256-Bit SSL Encrypted Railway Reservation Gateway
           </div>
 
           <button
@@ -182,7 +188,7 @@ export default function PaymentModal({ bookingData, onClose, onConfirmPayment, p
             style={{ width: '100%', minHeight: '44px', fontSize: '0.9rem' }}
           >
             {processing ? (
-              <span>Processing Payment...</span>
+              <span>Authorizing Transaction...</span>
             ) : (
               <>
                 <CheckCircle size={16} /> Pay ₹{bookingData.totalFare} & Issue Ticket

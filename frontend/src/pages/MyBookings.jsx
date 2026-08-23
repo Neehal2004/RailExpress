@@ -88,7 +88,7 @@ export default function MyBookings({ onNotification }) {
   if (!user) {
     return (
       <div style={{ maxWidth: '500px', margin: '60px auto', padding: '0 16px', textAlign: 'center' }}>
-        <div className="rail-panel" style={{ padding: '32px', background: '#FFFFFF' }}>
+        <div className="rail-panel" style={{ padding: '32px', background: '#FFFFFF', border: '1px solid var(--border-color)' }}>
           <AlertCircle size={44} style={{ color: 'var(--accent-red)', margin: '0 auto 14px auto' }} />
           <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontWeight: 800 }}>Authentication Required</h3>
           <p style={{ color: 'var(--text-muted)', marginTop: '8px', fontSize: '0.85rem' }}>
@@ -104,8 +104,12 @@ export default function MyBookings({ onNotification }) {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.75rem)', color: 'var(--text-primary)', fontWeight: 800 }}>My Travel Bookings</h2>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>View active reservations, download E-Tickets, and process ticket cancellations</p>
+          <h2 style={{ fontSize: 'clamp(1.25rem, 3.5vw, 1.75rem)', color: 'var(--text-primary)', fontWeight: 800, letterSpacing: '-0.01em' }}>
+            My Travel Bookings
+          </h2>
+          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+            View active reservations, download E-Tickets, and process ticket cancellations
+          </p>
         </div>
         <button onClick={() => fetchUserBookings(false)} className="btn btn-secondary btn-sm">
           <RefreshCw size={15} /> Refresh
@@ -120,13 +124,13 @@ export default function MyBookings({ onNotification }) {
       )}
 
       {error && (
-        <div className="rail-panel" style={{ padding: '24px', textAlign: 'center', color: 'var(--accent-red)', background: '#FCE8E6' }}>
+        <div className="rail-panel" style={{ padding: '24px', textAlign: 'center', color: 'var(--accent-red)', background: '#FCE8E6', border: '1px solid #FAD2CF' }}>
           {error}
         </div>
       )}
 
       {!loading && !error && bookings.length === 0 && (
-        <div className="rail-panel" style={{ padding: '40px 20px', textAlign: 'center', background: '#FFFFFF' }}>
+        <div className="rail-panel" style={{ padding: '40px 20px', textAlign: 'center', background: '#FFFFFF', border: '1px solid var(--border-color)' }}>
           <Ticket size={44} color="var(--text-muted)" style={{ margin: '0 auto 12px auto' }} />
           <h3 style={{ fontSize: '1.1rem', color: 'var(--text-primary)', fontWeight: 800 }}>No Booking Records Found</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '6px' }}>
@@ -155,23 +159,23 @@ export default function MyBookings({ onNotification }) {
               <tbody>
                 {bookings.map((b) => (
                   <tr key={b._id}>
-                    <td style={{ fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }}>{b.pnr}</td>
+                    <td style={{ fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }} className="tabular-nums">{b.pnr}</td>
                     <td>
                       <div style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{b.trainId?.trainName || 'Express Train'}</div>
                       <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                         #{b.trainId?.trainNumber} • {b.trainId?.source} → {b.trainId?.destination}
                       </div>
                     </td>
-                    <td>{b.travelDate}</td>
+                    <td className="tabular-nums">{b.travelDate}</td>
                     <td>
                       {b.passengers?.map((p, idx) => (
                         <div key={idx} style={{ fontSize: '0.78rem' }}>
-                          • {p.name} ({p.age}, {p.gender})
+                          • {p.name} (<span className="tabular-nums">{p.age}</span>, {p.gender})
                         </div>
                       ))}
                     </td>
                     <td>
-                      <div style={{ fontWeight: 700, color: '#137333', fontFamily: 'var(--font-mono)' }}>₹{b.totalFare}</div>
+                      <div style={{ fontWeight: 700, color: '#137333', fontFamily: 'var(--font-mono)' }} className="tabular-nums">₹{b.totalFare}</div>
                       <div style={{ fontSize: '0.725rem', color: 'var(--text-muted)' }}>Class: {b.classType}</div>
                     </td>
                     <td>
@@ -208,11 +212,11 @@ export default function MyBookings({ onNotification }) {
           {/* Mobile Booking Cards View */}
           <div className="mobile-booking-cards" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {bookings.map((b) => (
-              <div key={b._id} className="rail-card" style={{ padding: '16px', background: '#FFFFFF' }}>
+              <div key={b._id} className="rail-card" style={{ padding: '16px', background: '#FFFFFF', borderLeft: '4px solid var(--accent-brass)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <div>
-                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>PNR NUMBER</span>
-                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }}>{b.pnr}</div>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.04em' }}>PNR NUMBER</span>
+                    <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--accent-red)', fontFamily: 'var(--font-mono)' }} className="tabular-nums">{b.pnr}</div>
                   </div>
                   <span className={`badge ${b.status === 'Cancelled' ? 'badge-cancelled' : 'badge-confirmed'}`}>
                     {b.status}
@@ -225,16 +229,16 @@ export default function MyBookings({ onNotification }) {
                     {b.trainId?.source} → {b.trainId?.destination}
                   </div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                    Date: <strong style={{ color: 'var(--text-primary)' }}>{b.travelDate}</strong> • Class: <strong style={{ color: 'var(--text-primary)' }}>{b.classType}</strong>
+                    Date: <strong style={{ color: 'var(--text-primary)' }} className="tabular-nums">{b.travelDate}</strong> • Class: <strong style={{ color: 'var(--text-primary)' }}>{b.classType}</strong>
                   </div>
                 </div>
 
                 <div style={{ marginBottom: '12px', fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
                   <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: '2px' }}>Passengers:</div>
                   {b.passengers?.map((p, idx) => (
-                    <div key={idx}>• {p.name} ({p.age}, {p.gender})</div>
+                    <div key={idx}>• {p.name} (<span className="tabular-nums">{p.age}</span>, {p.gender})</div>
                   ))}
-                  <div style={{ marginTop: '6px', fontWeight: 800, color: '#137333', fontSize: '0.925rem', fontFamily: 'var(--font-mono)' }}>
+                  <div style={{ marginTop: '6px', fontWeight: 800, color: '#137333', fontSize: '0.925rem', fontFamily: 'var(--font-mono)' }} className="tabular-nums">
                     Total Fare: ₹{b.totalFare}
                   </div>
                 </div>
