@@ -4,7 +4,7 @@ const paymentSchema = new mongoose.Schema(
   {
     transactionId: { type: String, required: true, unique: true },
     bookingId: { type: mongoose.Schema.Types.ObjectId, ref: 'Booking', required: true },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    userId: { type: mongoose.Schema.Types.Mixed, required: true },
     amount: { type: Number, required: true },
     paymentMethod: { type: String, required: true, enum: ['UPI', 'Card', 'NetBanking'] },
     status: { type: String, enum: ['Success', 'Refunded', 'Failed'], default: 'Success' },

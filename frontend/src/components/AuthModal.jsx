@@ -1,7 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { X, LogIn, UserPlus, Shield, UserCheck, AlertCircle, Train } from 'lucide-react';
+import { SignIn, SignUp } from '@clerk/clerk-react';
+import { X, LogIn, UserPlus, UserCheck, AlertCircle, Train } from 'lucide-react';
 import API_BASE from '../config/api';
+
+const isClerkConfigured = !!import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 export default function AuthModal({ initialMode = 'login', onClose, onSuccessNotification }) {
   const { login } = useContext(AuthContext);
@@ -10,7 +13,6 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('passenger');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -31,7 +33,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data.message || (res.status === 502 || res.status === 504 ? 'Backend server is unreachable. Please ensure the API is running on port 5000.' : 'Authentication failed'));
+        throw new Error(data.message || (res.status === 502 || res.status === 504 ? 'Backend server is unreachable. Please ensure the API is running.' : 'Authentication failed'));
       }
 
       login(data);
@@ -64,7 +66,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        throw new Error(data.message || (res.status === 502 || res.status === 504 ? 'Backend server is unreachable. Please ensure the API is running on port 5000.' : 'Demo login failed'));
+        throw new Error(data.message || 'Demo login failed');
       }
 
       login(data);
@@ -84,7 +86,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-      <div className="modal-content" style={{ maxWidth: '440px' }}>
+      <div className="modal-content" style={{ maxWidth: isClerkConfigured ? '480px' : '440px', padding: '24px' }}>
         {/* Modal Header */}
         <div
           style={{
@@ -99,7 +101,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Train size={18} style={{ color: 'var(--accent-brass)' }} />
             <h3 id="auth-modal-title" style={{ fontSize: '1.15rem', color: 'var(--text-primary)', fontWeight: 800 }}>
-              {mode === 'login' ? 'Passenger & Staff Sign In' : 'New Passenger Registration'}
+              {mode === 'login' ? 'Passenger Sign In' : 'New Passenger Registration'}
             </h3>
           </div>
           <button onClick={onClose} className="btn btn-sm btn-secondary" aria-label="Close modal">
@@ -123,8 +125,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
               color: mode === 'login' ? '#ffffff' : 'var(--text-primary)',
               fontWeight: 700,
               fontSize: '0.85rem',
-              cursor: 'pointer',
-              touchAction: 'manipulation'
+              cursor: 'pointer'
             }}
           >
             <LogIn size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
@@ -144,8 +145,7 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
               color: mode === 'register' ? '#ffffff' : 'var(--text-primary)',
               fontWeight: 700,
               fontSize: '0.85rem',
-              cursor: 'pointer',
-              touchAction: 'manipulation'
+              cursor: 'pointer'
             }}
           >
             <UserPlus size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
@@ -153,92 +153,102 @@ export default function AuthModal({ initialMode = 'login', onClose, onSuccessNot
           </button>
         </div>
 
-        {/* Quick Demo Credentials Buttons */}
-        <div style={{ marginBottom: '16px', padding: '10px 12px', background: '#FFFFFF', borderRadius: 'var(--radius-sm)', border: '1px solid var(--accent-brass)' }}>
-          <span style={{ fontSize: '0.7rem', color: 'var(--accent-brass)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '8px' }}>
-            ⚡ Fast Demo Authentication:
-          </span>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '6px' }}>
-            <button
-              type="button"
-              onClick={() => handleDemoLogin('john@example.com', 'User@123')}
-              className="btn btn-sm btn-secondary"
-              style={{ fontSize: '0.75rem', width: '100%', minHeight: '34px' }}
-            >
-              <UserCheck size={13} style={{ color: 'var(--accent-brass)' }} /> Passenger Account (John Doe)
-            </button>
+        {/* Render Clerk authentication when publishable key is present */}
+        {isClerkConfigured ? (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            {mode === 'login' ? (
+              <SignIn routing="virtual" appearance={{ elements: { rootBox: { width: '100%' } } }} />
+            ) : (
+              <SignUp routing="virtual" appearance={{ elements: { rootBox: { width: '100%' } } }} />
+            )}
           </div>
-        </div>
+        ) : (
+          /* Standard Auth Form Fallback */
+          <>
+            <div style={{ marginBottom: '16px', padding: '10px 12px', background: '#FFFFFF', borderRadius: 'var(--radius-sm)', border: '1px solid var(--accent-brass)' }}>
+              <span style={{ fontSize: '0.7rem', color: 'var(--accent-brass)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '8px' }}>
+                ⚡ Fast Demo Authentication:
+              </span>
+              <button
+                type="button"
+                onClick={() => handleDemoLogin('john@example.com', 'User@123')}
+                className="btn btn-sm btn-secondary"
+                style={{ fontSize: '0.75rem', width: '100%', minHeight: '34px' }}
+              >
+                <UserCheck size={13} style={{ color: 'var(--accent-brass)' }} /> Passenger Account (John Doe)
+              </button>
+            </div>
 
-        {error && (
-          <div role="alert" style={{ background: 'var(--status-cancelled-bg)', color: 'var(--accent-red)', border: '1px solid var(--status-cancelled-border)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '16px', fontSize: '0.825rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <AlertCircle size={16} /> {error}
-          </div>
+            {error && (
+              <div role="alert" style={{ background: 'var(--status-cancelled-bg)', color: 'var(--accent-red)', border: '1px solid var(--status-cancelled-border)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '16px', fontSize: '0.825rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <AlertCircle size={16} /> {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              {mode === 'register' && (
+                <>
+                  <div className="form-group">
+                    <label className="form-label">Full Passenger Name *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Rahul Sharma"
+                      className="form-input"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">Phone Number *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. 9876543210"
+                      className="form-input"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                    />
+                  </div>
+                </>
+              )}
+
+              <div className="form-group">
+                <label className="form-label">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="e.g. user@railway.com"
+                  className="form-input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Password *</label>
+                <input
+                  type="password"
+                  required
+                  placeholder="••••••••"
+                  className="form-input"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn btn-primary"
+                style={{ width: '100%', minHeight: '44px', marginTop: '8px' }}
+              >
+                {loading ? 'Processing...' : mode === 'login' ? 'Sign In to RailExpress' : 'Complete Registration'}
+              </button>
+            </form>
+          </>
         )}
-
-        {/* Auth Form */}
-        <form onSubmit={handleSubmit}>
-          {mode === 'register' && (
-            <>
-              <div className="form-group">
-                <label className="form-label">Full Passenger Name *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Rahul Sharma"
-                  className="form-input"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Phone Number *</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. 9876543210"
-                  className="form-input"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-            </>
-          )}
-
-          <div className="form-group">
-            <label className="form-label">Email Address *</label>
-            <input
-              type="email"
-              required
-              placeholder="e.g. user@railway.com"
-              className="form-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Password *</label>
-            <input
-              type="password"
-              required
-              placeholder="••••••••"
-              className="form-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn btn-primary"
-            style={{ width: '100%', minHeight: '44px', marginTop: '8px' }}
-          >
-            {loading ? 'Processing...' : mode === 'login' ? 'Sign In to RailExpress' : 'Complete Registration'}
-          </button>
-        </form>
       </div>
     </div>
   );

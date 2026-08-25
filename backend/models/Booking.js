@@ -11,7 +11,7 @@ const passengerSchema = new mongoose.Schema({
 const bookingSchema = new mongoose.Schema(
   {
     pnr: { type: String, required: true, unique: true },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    userId: { type: mongoose.Schema.Types.Mixed, required: true },
     trainId: { type: mongoose.Schema.Types.ObjectId, ref: 'Train', required: true },
     travelDate: { type: String, required: true },
     classType: { type: String, required: true },
